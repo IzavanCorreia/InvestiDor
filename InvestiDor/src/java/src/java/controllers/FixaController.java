@@ -55,6 +55,7 @@ public class FixaController {
 
         FacesContext.getCurrentInstance().addMessage(null,
                 new FacesMessage("Renda fixa deletada com sucesso!"));
+        
     }
 
     public RendaFixa getRendafixasel() {
@@ -71,15 +72,6 @@ public class FixaController {
 
     public void setRendafixa(RendaFixa rendafixa) {
         this.rendafixa = rendafixa;
-    }
-
-    public List<RendaFixa> lerTodasRendasFixasPorUsuario(int id) {
-
-        return ManagerDao.getCurrentInstance().
-                read("select r from RendaFixa r where r.usuario.id = " + id
-                        + " order by r.id desc",
-                        RendaFixa.class);
-
     }
 
     public void alterar() {

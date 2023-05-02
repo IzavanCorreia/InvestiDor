@@ -5,10 +5,14 @@
  */
 package src.java.model.negocio;
 
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -19,7 +23,7 @@ import javax.persistence.Id;
 public class Usuario {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String cpf;
     private String nome;
@@ -27,6 +31,13 @@ public class Usuario {
     private String telefone; 
     private String email;
     private String senha;
+    
+     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RendaFixa> rendaFixa = new ArrayList<>();
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RendaVariavel> rendaVariavel = new ArrayList<>();
+    
 
     public int getId() {
         return id;
@@ -83,6 +94,21 @@ public class Usuario {
     public void setSenha(String senha) {
         this.senha = senha;
     }
-    
+
+    public List<RendaFixa> getRendaFixa() {
+        return rendaFixa;
+    }
+
+    public void setRendaFixa(List<RendaFixa> rendaFixa) {
+        this.rendaFixa = rendaFixa;
+    }
+
+    public List<RendaVariavel> getRendaVariavel() {
+        return rendaVariavel;
+    }
+
+    public void setRendaVariavel(List<RendaVariavel> rendaVariavel) {
+        this.rendaVariavel = rendaVariavel;
+    }
     
 }
