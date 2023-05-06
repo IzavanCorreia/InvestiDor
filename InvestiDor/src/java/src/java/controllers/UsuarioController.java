@@ -5,13 +5,18 @@
  */
 package src.java.controllers;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import org.apache.tomcat.util.http.fileupload.RequestContext;
 import src.java.model.dao.ManagerDao;
+import src.java.model.negocio.RendaFixa;
+import src.java.model.negocio.RendaVariavel;
 import src.java.model.negocio.Usuario;
 
 /**
@@ -102,6 +107,43 @@ public class UsuarioController {
 
         return ManagerDao.getCurrentInstance()
                 .read("select u from Usuario u", Usuario.class);
+    }
+
+    public List<RendaFixa> lerTodasRendasFixasPorUsuario(int id) {
+
+        return ManagerDao.getCurrentInstance().
+                read("select r from RendaFixa r where r.usuario.id = " + id
+                        + " order by r.id desc",
+                        RendaFixa.class);
+
+    }
+
+    public List<RendaVariavel> lerTodasRendasVariaveisPorUsuario(int id) {
+        return ManagerDao.getCurrentInstance().read("select r from RendaVariavel r where r.usuario.id = " + id + " order by r.id desc", RendaVariavel.class);
+    }
+
+    public Double getValorTotalRendasFixasPorUsuario(int id) {
+        Double valorTotalFixa = 0.0;
+
+        List<RendaFixa> rendasFixas = lerTodasRendasFixasPorUsuario(id);
+        for (RendaFixa rf : rendasFixas) {
+            valorTotalFixa += rf.getValorUnitarioAtual();
+        }
+
+        return valorTotalFixa;
+
+    }
+
+    public Double getValorTotalRendasVariaveisPorUsuario(int id) {
+
+        Double valorTotalVariavel = 0.0;
+
+        List<RendaVariavel> rendasVariaveis = lerTodasRendasVariaveisPorUsuario(id);
+        for (RendaVariavel rv : rendasVariaveis) {
+            valorTotalVariavel += rv.getValorUnitarioAtual();
+        }
+
+        return valorTotalVariavel;
     }
 
 }

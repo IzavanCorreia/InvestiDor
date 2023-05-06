@@ -21,7 +21,7 @@
 
         <b:form id="formMenuUsuario">
 
-            <b:navBar brand="Home" brand-href="index.xhtml" fluid="true">
+            <b:navBar brand="Home" brand-href="indexResumo.xhtml" fluid="true">
                 <b:navbarLinks >
 
 
@@ -29,8 +29,10 @@
 
                 <b:navbarLinks style="float: right" pull="right">
                     <b:dropMenu value="Usuario: #{(loginController.usuarioLogado ne null)?loginController.usuarioLogado.nome:''}">
-                        <b:navLink value="Meu Perfil" href="#"/>
-                        <b:navLink value="Alterar Senha" href="#"/>
+                        <b:navLink value="Meu Perfil" href='indexPerfil.xhtml'/>
+                         <b:navLink value="Renda Fixa" href='indexRendaFixa.xhtml'/>
+                          <b:navLink value="Renda Variável" href='indexRendaVariavel.xhtml'/>
+                        <b:navLink value="Tutoriais" href='indexTutoriais.xhtml'/>
                         <b:navCommandLink value="Logout"  action="#{loginController.logout()}"  href='index.xhtml'/>
                     </b:dropMenu>
 
