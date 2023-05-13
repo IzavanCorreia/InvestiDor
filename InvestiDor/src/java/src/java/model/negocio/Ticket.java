@@ -25,6 +25,14 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     
+    private String nome;
+    
+    private String nomeEmpresa;
+    
+    private double valorAtual;
+    
+    private String tipoRendaFixa;
+    
     @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RendaVariavel> rendaVariavel = new ArrayList<>();
 
@@ -35,6 +43,39 @@ public class Ticket {
     public void setId(int id) {
         this.id = id;
     }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getNomeEmpresa() {
+        return nomeEmpresa;
+    }
+
+    public void setNomeEmpresa(String nomeEmpresa) {
+        this.nomeEmpresa = nomeEmpresa;
+    }
+
+    public double getValorAtual() {
+        return valorAtual;
+    }
+
+    public void setValorAtual(double valorAtual) {
+        this.valorAtual = valorAtual;
+    }
+
+    public String getTipoRendaFixa() {
+        return tipoRendaFixa;
+    }
+
+    public void setTipoRendaFixa(String tipoRendaFixa) {
+        this.tipoRendaFixa = tipoRendaFixa;
+    }
+    
 
     public List<RendaVariavel> getRendaVariavel() {
         return rendaVariavel;

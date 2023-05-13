@@ -37,7 +37,7 @@ public class LoginController {
         
         List<Usuario> usuarios = ManagerDao.getCurrentInstance().
                 read("select u from Usuario u where "
-                        + "u.nome='"+login+"' and u.senha='"+senha+"'"
+                        + "u.email='"+login+"' and u.senha='"+senha+"'"
                         , Usuario.class);
         
         

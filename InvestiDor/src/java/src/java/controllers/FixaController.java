@@ -42,9 +42,12 @@ public class FixaController {
         rendafixa.setUsuario(usuario);
         rendafixa.setDataInicialString();
         rendafixa.setDataFinalString();
+        rendafixa.setValorTotalCompra();
+        rendafixa.setValorTotalAtual();
+
         ManagerDao.getCurrentInstance().insert(rendafixa);
-        
-          this.rendafixa = new RendaFixa();
+
+        this.rendafixa = new RendaFixa();
 
         FacesContext.getCurrentInstance().addMessage(null,
                 new FacesMessage("Investimento inserido com sucesso"));
@@ -55,12 +58,12 @@ public class FixaController {
 
         FacesContext.getCurrentInstance().addMessage(null,
                 new FacesMessage("Renda fixa deletada com sucesso!"));
-        
+
     }
-    
-    public void clearSelection(){    
+
+    public void clearSelection() {
         this.rendafixasel = null;
-        
+
     }
 
     public RendaFixa getRendafixasel() {
@@ -80,6 +83,11 @@ public class FixaController {
     }
 
     public void alterar() {
+
+        this.rendafixasel.setDataInicialString();
+        this.rendafixasel.setDataFinalString();
+        this.rendafixasel.setValorTotalCompra();
+        this.rendafixasel.setValorTotalAtual();
 
         ManagerDao.getCurrentInstance().update(this.rendafixasel);
 

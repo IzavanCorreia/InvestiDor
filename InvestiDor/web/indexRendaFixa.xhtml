@@ -18,12 +18,6 @@
             <b:button icon="glyphicon glyphicon-plus" style-class="btn btn-primary" onclick="$('#modalCriaInvestimento').modal('show')"></b:button>
         </b:form>
 
-        <script>
-            function atualizarPagina(caminho) {
-                window.location.replace(caminho);
-            }
-        </script>
-
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
         <script>
             let lista = [];
@@ -36,7 +30,7 @@
 
             <c:if  test="#{i.index le 100}">
 
-                <script> lista.push(['#{item.nome}', #{item.valorUnitarioAtual}]);
+                <script> lista.push(['#{item.nome}', #{item.valorTotalAtual}]);
                 </script>
 
             </c:if>
@@ -108,7 +102,7 @@
 
                         <p:card style="width: 25rem; margin-bottom: 2em; margin-left: 2em">
                             <f:facet name="header"><h3>#{item.nome}</h3></f:facet>
-                            <f:facet name="header"><h3>R$ #{item.valorUnitarioAtual}</h3></f:facet>
+                            <f:facet name="header"><h3>R$ #{item.valorTotalAtual}</h3></f:facet>
                             <p:commandButton icon="glyphicon glyphicon-search"
                                              oncomplete="$('.modalVisualizarInvestimento').modal('show')"
                                              ajax='true' update=":modalVisualizarInvestimento">
@@ -119,9 +113,9 @@
                                              update=":modalAtualizar" ajax="true">
                                 <f:setPropertyActionListener value="#{item}" target="#{fixaController.rendafixasel}"/>
                             </p:commandButton>   
-                            <p:commandButton icon="glyphicon glyphicon-remove" action="#{fixaController.deletar()}" update="formCards" ajax="true"
-                                             onclick="atualizarPagina('indexRendaFixa.xhtml')">
-                                <f:setPropertyActionListener value="#{item}" target="#{fixaController.rendafixasel}"/>   
+                            <p:commandButton icon="glyphicon glyphicon-remove"  oncomplete="$('.modalDeletar').modal('show')"
+                                             update=":modalDeletar" ajax="true">
+                                <f:setPropertyActionListener value="#{item}" target="#{fixaController.rendafixasel}"/>
                             </p:commandButton>
                         </p:card>
 
@@ -145,6 +139,10 @@
                 <h:outputText value="#{fixaController.rendafixasel.valorUnitarioCompra}"/>
                 <h:outputText value="Valor unitário atual:"/>
                 <h:outputText value="#{fixaController.rendafixasel.valorUnitarioAtual}"/>
+                 <h:outputText value="Valor total de compra:"/>
+                <h:outputText value="#{fixaController.rendafixasel.valorTotalCompra}"/>
+                <h:outputText value="Valor total atual:"/>
+                <h:outputText value="#{fixaController.rendafixasel.valorTotalAtual}"/>
                 <h:outputText value="Data inicial:"/>
                 <h:outputText value="#{fixaController.rendafixasel.dataInicialString}"/>
                 <h:outputText value="Data final:"/>
@@ -200,6 +198,14 @@
             </b:form>
 
 
+        </b:modal>
+
+        <b:modal id="modalDeletar" style-class="modalDeletar fade"
+                 title="Tem certeza que deseja apagar o investimento #{fixaController.rendafixasel.nome}?">
+            <b:form id="formDel">
+                <b:commandButton value="Sim" action="#{fixaController.deletar()}" 
+                                 oncomplete="$('.formDel').modal('hide')"/>
+            </b:form>
         </b:modal>
 
     </h:body>

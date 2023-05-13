@@ -9,6 +9,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
 
 public class ManagerDao {
     
@@ -70,5 +71,10 @@ public class ManagerDao {
         em.remove(oDelete);
         em.getTransaction().commit();
         em.close();
+    }
+    
+     public <T> TypedQuery<T> createQuery(String jpql, Class<T> resultClass) {
+        EntityManager em = emf.createEntityManager();
+        return em.createQuery(jpql, resultClass);
     }
 }

@@ -15,6 +15,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.Pattern;
+
 
 /**
  *
@@ -30,7 +36,9 @@ public class RendaFixa {
     private String indexador;
     private double quantidade;
     private double valorUnitarioCompra;
+    private double valorTotalCompra;
     private double valorUnitarioAtual;
+    private double valorTotalAtual;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date dataInicial;
     @Temporal(javax.persistence.TemporalType.DATE)
@@ -92,7 +100,23 @@ public class RendaFixa {
     public void setValorUnitarioAtual(double valorUnitarioAtual) {
         this.valorUnitarioAtual = valorUnitarioAtual;
     }
-    
+
+    public double getValorTotalCompra() {
+        return valorTotalCompra;
+    }
+
+    public void setValorTotalCompra() {
+        this.valorTotalCompra = getValorUnitarioCompra() * getQuantidade();
+    }
+
+    public double getValorTotalAtual() {
+        return valorTotalAtual;
+    }
+
+    public void setValorTotalAtual() {
+        this.valorTotalAtual = getValorUnitarioAtual() * getQuantidade();
+    }
+     
 
     public Usuario getUsuario() {
         return usuario;
