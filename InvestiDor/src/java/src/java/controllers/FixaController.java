@@ -57,6 +57,11 @@ public class FixaController {
                 new FacesMessage("Renda fixa deletada com sucesso!"));
         
     }
+    
+    public void clearSelection(){    
+        this.rendafixasel = null;
+        
+    }
 
     public RendaFixa getRendafixasel() {
         return rendafixasel;
