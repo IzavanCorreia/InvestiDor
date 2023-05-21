@@ -10,6 +10,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -38,6 +39,9 @@ public class UsuarioController {
     @Valid
     private Usuario selusuario;
     private Validator validator;
+    private static final String PASSWORD_REGEX = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$&@#])[0-9a-zA-Z$&@#]{8,}$";
+    private static final String ERROR_MESSAGE = "A senha deve conter pelo menos um dígito, uma letra minúscula, uma letra maiúscula, "
+            + "um dos caracteres especiais ($, *, &, @, #) e ter no mínimo 8 caracteres.";
 
     @PostConstruct
     public void init() {
@@ -48,6 +52,8 @@ public class UsuarioController {
     }
 
     public void inserir(String confirma) {
+        
+
         String confirmaNova = sha512(confirma);
         String senhaQueVaiProBanco = sha512(this.usuario.getSenha());
         this.usuario.setSenha(senhaQueVaiProBanco);
@@ -72,7 +78,18 @@ public class UsuarioController {
             return;
         }
         
-         if (verificarExistenciaUsuarioCpf(usuario.getCpf())) {
+        System.out.println(validatePassword(confirma));
+        
+          if (!validatePassword(confirma)) {
+            FacesContext.getCurrentInstance()
+                    .addMessage(null,
+                            new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                                    "Erro!", ERROR_MESSAGE));
+
+            return;
+        }
+
+        if (verificarExistenciaUsuarioCpf(usuario.getCpf())) {
             FacesContext.getCurrentInstance()
                     .addMessage(null,
                             new FacesMessage(FacesMessage.SEVERITY_ERROR,
@@ -111,8 +128,8 @@ public class UsuarioController {
 
         return !usuarios.isEmpty();
     }
-    
-     public boolean verificarExistenciaUsuarioCpf(String cpf) {
+
+    public boolean verificarExistenciaUsuarioCpf(String cpf) {
         String query = "SELECT u FROM Usuario u WHERE u.cpf = :cpf";
         List<Usuario> usuarios = ManagerDao.getCurrentInstance().read(query, Usuario.class, "cpf", cpf);
 
@@ -263,6 +280,10 @@ public class UsuarioController {
             e.printStackTrace();
             return null;
         }
+    }
+    
+    public static boolean validatePassword(String password) {
+        return Pattern.matches(PASSWORD_REGEX, password);
     }
 
 }
