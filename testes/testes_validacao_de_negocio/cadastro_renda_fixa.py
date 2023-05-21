@@ -13,6 +13,45 @@ driver = webdriver.Chrome()
 num_tests_passed = 0
 num_tests_failed = 0
 
+def criarRendaFixa(driver,nome_do_cdb,indexador_valor,quantidade_renda_fixa_comprar,valor_unitario_variavel,valor_unitario_atual_variavel,data_inicial_variavel,data_final_variavel,tipo_variavel):
+    nome_cdb = driver.find_element(By.ID, "input_formCadInvestimento:j_idt26")
+    nome_cdb.send_keys(nome_do_cdb)
+    indexador_input = driver.find_element(By.ID, "input_formCadInvestimento:j_idt28")
+    indexador_input.send_keys(indexador_valor)
+
+    quantidade_input = driver.find_element(By.ID, "input_formCadInvestimento:j_idt30")
+
+    quantidade_input.send_keys(Keys.BACK_SPACE)
+    quantidade_input.send_keys(Keys.BACK_SPACE)
+
+    quantidade_input.send_keys(quantidade_renda_fixa_comprar)
+
+    valor_unitario_input = driver.find_element(By.ID, "input_formCadInvestimento:j_idt32")
+
+    valor_unitario_input.send_keys(Keys.BACK_SPACE)
+    valor_unitario_input.send_keys(Keys.BACK_SPACE)
+
+
+    valor_unitario_input.send_keys(valor_unitario_variavel)
+
+    valor_unitario_atual_input = driver.find_element(By.ID, "input_formCadInvestimento:j_idt34")
+    valor_unitario_atual_input.send_keys(Keys.BACK_SPACE)
+    valor_unitario_atual_input.send_keys(Keys.BACK_SPACE)
+
+    valor_unitario_atual_input.send_keys(valor_unitario_atual_variavel)
+
+    data_inicio_input = driver.find_element(By.ID, "formCadInvestimento:j_idt36_input")
+    data_inicio_input.send_keys(data_inicial_variavel)
+
+    data_final_input = driver.find_element(By.ID, "formCadInvestimento:j_idt38_input")
+    data_final_input.send_keys(data_final_variavel)
+
+    tipo_input = driver.find_element(By.ID, "input_formCadInvestimento:j_idt40")
+    tipo_input.send_keys("cdb")
+
+    investir_button = driver.find_element(By.ID, "formCadInvestimento:j_idt43")
+    investir_button.click()
+    return 0
 try:
     # Teste 1: Login com usuário e senha válidos
     logging.info("Teste 1: Login com usuário e senha válidos")
@@ -50,43 +89,22 @@ try:
     logout_button = driver.find_element(By.ID, "formIndexRendaFixa:j_idt20")
     logout_button.click()
 
-    nome_cdb = driver.find_element(By.ID, "input_formCadInvestimento:j_idt29")
-    nome_cdb.send_keys("CDB BANCO SEGURO 107% CDI")
-    indexador_input = driver.find_element(By.ID, "input_formCadInvestimento:j_idt31")
-    indexador_input.send_keys("CDI")
+    nome_do_cdb = "CDB BANCO SEGURO 107% CDI"
+    indexador_valor = "CDI"
+    quantidade_renda_fixa_comprar = 1
+    valor_unitario_variavel = 1000
+    valor_unitario_atual_variavel = 1000
+    data_inicial_variavel = "11/05/2023"
+    data_final_variavel = "11/05/2026"
+    tipo_variavel = "cdb"
 
-    quantidade_input = driver.find_element(By.ID, "input_formCadInvestimento:j_idt33")
+    
+    criarRendaFixa(driver,nome_do_cdb,indexador_valor,quantidade_renda_fixa_comprar,valor_unitario_variavel,valor_unitario_atual_variavel,data_inicial_variavel,data_final_variavel,tipo_variavel)
+    #logout_button = driver.find_element(By.ID, "formIndexRendaFixa:j_idt20")
+    #logout_button.click()
+    #criarRendaFixa(driver,nome_do_cdb,indexador_valor,quantidade_renda_fixa_comprar,valor_unitario_variavel,valor_unitario_atual_variavel,"",data_final_variavel,tipo_variavel)
 
-    quantidade_input.send_keys(Keys.BACK_SPACE)
-    quantidade_input.send_keys(Keys.BACK_SPACE)
-
-    quantidade_input.send_keys("1000")
-
-    valor_unitario_input = driver.find_element(By.ID, "input_formCadInvestimento:j_idt35")
-
-    valor_unitario_input.send_keys(Keys.BACK_SPACE)
-    valor_unitario_input.send_keys(Keys.BACK_SPACE)
-
-
-    valor_unitario_input.send_keys("1000")
-
-    valor_unitario_atual_input = driver.find_element(By.ID, "input_formCadInvestimento:j_idt37")
-    valor_unitario_atual_input.send_keys(Keys.BACK_SPACE)
-    valor_unitario_atual_input.send_keys(Keys.BACK_SPACE)
-
-    valor_unitario_atual_input.send_keys("1001")
-
-    data_inicio_input = driver.find_element(By.ID, "formCadInvestimento:j_idt39_input")
-    data_inicio_input.send_keys("11/05/2023")
-
-    data_final_input = driver.find_element(By.ID, "formCadInvestimento:j_idt41_input")
-    data_final_input.send_keys("11/05/2026")
-
-    tipo_input = driver.find_element(By.ID, "input_formCadInvestimento:j_idt43")
-    tipo_input.send_keys("cdb")
-
-    investir_button = driver.find_element(By.ID, "formCadInvestimento:j_idt46")
-    investir_button.click()
+    
     driver.implicitly_wait(10)
     assert driver.current_url == "http://localhost:8080/InvestiDor/faces/indexRendaFixa.xhtml"
     logging.info("Renda criado bem-sucedido")

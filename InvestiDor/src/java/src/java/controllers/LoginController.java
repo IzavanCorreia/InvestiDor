@@ -35,19 +35,14 @@ public class LoginController {
     
     public String logar(String login, String senha){
         
-        List<Usuario> usuarios = ManagerDao.getCurrentInstance().
-                read("select u from Usuario u where "
-                        + "u.nome='"+login+"' and u.senha='"+senha+"'"
-                        , Usuario.class);
-        
-        
-        if(!usuarios.isEmpty()){
-            
-            this.usuarioLogado = usuarios.get(0);
-            this.tipoLogado = "usuario";
-            
-            return "indexUsuario";
-        }
+        String query = "select u from Usuario u where u.nome = :login and u.senha = :senha";
+    List<Usuario> usuarios = ManagerDao.getCurrentInstance().read(query, Usuario.class, "login", login, "senha", senha);
+    
+    if (!usuarios.isEmpty()){
+        this.usuarioLogado = usuarios.get(0);
+        this.tipoLogado = "usuario";
+        return "indexUsuario";
+    }
         
         FacesContext.getCurrentInstance()
                     .addMessage(null, new FacesMessage(
