@@ -5,6 +5,9 @@
  */
 package src.java.controllers;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -17,6 +20,7 @@ import javax.validation.Valid;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import static src.java.controllers.LoginController.sha512;
 import src.java.model.dao.ManagerDao;
 import src.java.model.negocio.RendaFixa;
 import src.java.model.negocio.RendaVariavel;
@@ -45,8 +49,11 @@ public class UsuarioController {
     }
 
     public void inserir(String confirma) {
+        String confirmaNova = sha512(confirma);
+        String senhaQueVaiProBanco = sha512(this.usuario.getSenha());
+        this.usuario.setSenha(senhaQueVaiProBanco);
 
-        if (!confirma.equals(this.usuario.getSenha())) {
+        if (!confirmaNova.equals(this.usuario.getSenha())) {
 
             FacesContext.getCurrentInstance()
                     .addMessage(null,
@@ -222,6 +229,25 @@ public class UsuarioController {
         }
 
         return valorTotalVariavelCompra;
+    }
+
+    public static String sha512(String input) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-512");
+            byte[] encodedHash = digest.digest(input.getBytes(StandardCharsets.UTF_8));
+
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : encodedHash) {
+                String hex = String.format("%02x", b);
+                hexString.append(hex);
+            }
+
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            // Tratar exceção caso o algoritmo SHA-512 não esteja disponível
+            e.printStackTrace();
+            return null;
+        }
     }
 
 }
