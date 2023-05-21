@@ -52,7 +52,6 @@ public class ManagerDao {
     EntityManager em = emf.createEntityManager();
     TypedQuery typedQuery = em.createQuery(queryString, c);
     
-    int index = 1;
     for (int i = 0; i < parameters.length; i += 2){
         typedQuery.setParameter(parameters[i].toString(), parameters[i + 1]);
     }

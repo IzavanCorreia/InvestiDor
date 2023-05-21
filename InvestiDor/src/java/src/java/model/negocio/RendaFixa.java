@@ -15,6 +15,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.AssertTrue;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.validation.constraints.DecimalMin;
 
 /**
  *
@@ -26,17 +32,46 @@ public class RendaFixa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @NotNull
+    @Size(min = 1, max = 100)
     private String nome;
+
+    @Size(min = 1, max = 100)
     private String indexador;
+
+    @NotNull
+    @DecimalMin("0.01")
+    @DecimalMax("99999.99")
     private double quantidade;
+
+    @NotNull
+    @DecimalMin("0.01")
+    @DecimalMax("9999999999.99")
     private double valorUnitarioCompra;
+
+    private double valorTotalCompra;
+
+    @NotNull
+    @DecimalMin("0.01")
+    @DecimalMax("9999999999.99")
     private double valorUnitarioAtual;
-    @Temporal(javax.persistence.TemporalType.DATE)
+
+    private double valorTotalAtual;
+
+    @NotNull
+    @Temporal(TemporalType.DATE)
     private Date dataInicial;
-    @Temporal(javax.persistence.TemporalType.DATE)
+
+    @NotNull
+    @Temporal(TemporalType.DATE)
     private Date dataFinal;
+
+    @NotNull
+    @Size(min = 1, max = 100)
     private String tipo;
-    private Boolean imposto;
+
+    private boolean imposto;
 
     private String dataInicialString;
     private String dataFinalString;
@@ -92,7 +127,22 @@ public class RendaFixa {
     public void setValorUnitarioAtual(double valorUnitarioAtual) {
         this.valorUnitarioAtual = valorUnitarioAtual;
     }
-    
+
+    public double getValorTotalCompra() {
+        return valorTotalCompra;
+    }
+
+    public void setValorTotalCompra() {
+        this.valorTotalCompra = getValorUnitarioCompra() * quantidade;
+    }
+
+    public double getValorTotalAtual() {
+        return valorTotalAtual;
+    }
+
+    public void setValorTotalAtual() {
+        this.valorTotalAtual = getValorUnitarioAtual() * quantidade;
+    }
 
     public Usuario getUsuario() {
         return usuario;
@@ -154,6 +204,11 @@ public class RendaFixa {
         Date data = getDataFinal();
         String dataFormatada = formatador.format(data);
         this.dataFinalString = dataFormatada;
+    }
+
+    @AssertTrue(message = "A data final deve ser maior que a data inicial")
+    public boolean isDataFinalMaiorQueInicial() {
+        return dataFinal.after(dataInicial);
     }
 
 }
