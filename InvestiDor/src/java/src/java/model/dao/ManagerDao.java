@@ -9,6 +9,8 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
+
 
 public class ManagerDao {
     
@@ -46,16 +48,20 @@ public class ManagerDao {
         em.close();
     }
     
-    public List read(String query,Class c){
-        
-        EntityManager em = emf.createEntityManager();
-        
-        List returnedList = em.createQuery(query,c).getResultList();
-        
-        em.close();
-        
-        return returnedList;
+ public List read(String queryString, Class c, Object... parameters){
+    EntityManager em = emf.createEntityManager();
+    TypedQuery typedQuery = em.createQuery(queryString, c);
+    
+    for (int i = 0; i < parameters.length; i += 2){
+        typedQuery.setParameter(parameters[i].toString(), parameters[i + 1]);
     }
+    
+    List returnedList = typedQuery.getResultList();
+    em.close();
+    
+    return returnedList;
+}
+
     
     public void delete(Object o){
         EntityManager em = emf.createEntityManager();
