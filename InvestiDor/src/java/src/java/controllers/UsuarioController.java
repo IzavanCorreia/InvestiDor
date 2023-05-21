@@ -20,7 +20,6 @@ import javax.validation.Valid;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import static src.java.controllers.LoginController.sha512;
 import src.java.model.dao.ManagerDao;
 import src.java.model.negocio.RendaFixa;
 import src.java.model.negocio.RendaVariavel;
@@ -64,11 +63,20 @@ public class UsuarioController {
 
         }
 
-        if (verificarExistenciaUsuario(usuario.getEmail())) {
+        if (verificarExistenciaUsuarioEmail(usuario.getEmail())) {
             FacesContext.getCurrentInstance()
                     .addMessage(null,
                             new FacesMessage(FacesMessage.SEVERITY_ERROR,
                                     "Erro!", "o e-mail informado não está disponível"));
+
+            return;
+        }
+        
+         if (verificarExistenciaUsuarioCpf(usuario.getCpf())) {
+            FacesContext.getCurrentInstance()
+                    .addMessage(null,
+                            new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                                    "Erro!", "o cpf informado não está disponível"));
 
             return;
         }
@@ -97,9 +105,16 @@ public class UsuarioController {
 
     }
 
-    public boolean verificarExistenciaUsuario(String email) {
+    public boolean verificarExistenciaUsuarioEmail(String email) {
         String query = "SELECT u FROM Usuario u WHERE u.email = :email";
         List<Usuario> usuarios = ManagerDao.getCurrentInstance().read(query, Usuario.class, "email", email);
+
+        return !usuarios.isEmpty();
+    }
+    
+     public boolean verificarExistenciaUsuarioCpf(String cpf) {
+        String query = "SELECT u FROM Usuario u WHERE u.cpf = :cpf";
+        List<Usuario> usuarios = ManagerDao.getCurrentInstance().read(query, Usuario.class, "cpf", cpf);
 
         return !usuarios.isEmpty();
     }
