@@ -29,7 +29,7 @@ import src.java.model.negocio.Usuario;
 @ManagedBean
 @SessionScoped
 public class UsuarioController {
-    
+
     @Valid
     private Usuario usuario;
     @Valid
@@ -56,13 +56,13 @@ public class UsuarioController {
             return;
 
         }
-        
+
         if (verificarExistenciaUsuario(usuario.getEmail())) {
             FacesContext.getCurrentInstance()
                     .addMessage(null,
                             new FacesMessage(FacesMessage.SEVERITY_ERROR,
                                     "Erro!", "o e-mail informado não está disponível"));
-            
+
             return;
         }
 
@@ -89,15 +89,12 @@ public class UsuarioController {
                 new FacesMessage("Usuario cadastrado com sucesso!"));
 
     }
-    
-     public boolean verificarExistenciaUsuario(String email) {
-        // Verifica se existe um usuário com o mesmo login ou senha
-        String query = "SELECT COUNT(u) FROM Usuario u WHERE u.email = :email";
-        Long count = ManagerDao.getCurrentInstance().createQuery(query, Long.class)
-                .setParameter("email", email)
-                .getSingleResult();
 
-        return count > 0;
+    public boolean verificarExistenciaUsuario(String email) {
+        String query = "SELECT u FROM Usuario u WHERE u.email = :email";
+        List<Usuario> usuarios = ManagerDao.getCurrentInstance().read(query, Usuario.class, "email", email);
+
+        return !usuarios.isEmpty();
     }
 
     public void deletar() {
