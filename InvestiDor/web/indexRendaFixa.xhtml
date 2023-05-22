@@ -103,17 +103,17 @@
                         <p:card style="width: 25rem; margin-bottom: 2em; margin-left: 2em">
                             <f:facet name="header"><h3>#{item.nome}</h3></f:facet>
                             <f:facet name="header"><h3>R$ #{item.valorTotalAtual}</h3></f:facet>
-                            <p:commandButton icon="glyphicon glyphicon-search"
+                            <p:commandButton style="width: 16%; margin-bottom: 5%; margin-left: 10%" icon="glyphicon glyphicon-search"
                                              oncomplete="$('.modalVisualizarInvestimento').modal('show')"
                                              ajax='true' update=":modalVisualizarInvestimento">
                                 <f:setPropertyActionListener value="#{item}" 
                                                              target="#{fixaController.rendafixasel}"/>
                             </p:commandButton>
-                            <p:commandButton icon="glyphicon glyphicon-pencil" oncomplete="$('.modalAtualizar').modal('show')"
+                            <p:commandButton style="width: 16%; margin-bottom: 5%; margin-left: 15%" icon="glyphicon glyphicon-pencil" oncomplete="$('.modalAtualizar').modal('show')"
                                              update=":modalAtualizar" ajax="true">
                                 <f:setPropertyActionListener value="#{item}" target="#{fixaController.rendafixasel}"/>
                             </p:commandButton>   
-                            <p:commandButton icon="glyphicon glyphicon-remove"  oncomplete="$('.modalDeletar').modal('show')"
+                            <p:commandButton style="width: 16%; margin-bottom: 5%; margin-left: 15%" icon="glyphicon glyphicon-remove"  oncomplete="$('.modalDeletar').modal('show')"
                                              update=":modalDeletar" ajax="true">
                                 <f:setPropertyActionListener value="#{item}" target="#{fixaController.rendafixasel}"/>
                             </p:commandButton>
