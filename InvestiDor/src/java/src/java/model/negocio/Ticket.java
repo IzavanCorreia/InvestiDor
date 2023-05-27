@@ -31,7 +31,7 @@ public class Ticket {
     
     private double valorAtual;
     
-    private String tipoRendaFixa;
+    private String tipoTicket;
     
     @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RendaVariavel> rendaVariavel = new ArrayList<>();
@@ -68,12 +68,12 @@ public class Ticket {
         this.valorAtual = valorAtual;
     }
 
-    public String getTipoRendaFixa() {
-        return tipoRendaFixa;
+    public String getTipoTicket() {
+        return tipoTicket;
     }
 
-    public void setTipoRendaFixa(String tipoRendaFixa) {
-        this.tipoRendaFixa = tipoRendaFixa;
+    public void setTipoTicket(String tipoTicket) {
+        this.tipoTicket = tipoTicket;
     }
     
 

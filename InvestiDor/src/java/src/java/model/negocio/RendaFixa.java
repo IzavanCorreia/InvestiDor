@@ -21,6 +21,7 @@ import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.validation.constraints.DecimalMin;
+import src.java.model.validacao.PontoDecimal;
 
 /**
  *
@@ -40,11 +41,13 @@ public class RendaFixa {
     @Size(min = 1, max = 100)
     private String indexador;
 
+    @PontoDecimal
     @NotNull
     @DecimalMin("0.01")
     @DecimalMax("99999.99")
     private double quantidade;
 
+    @PontoDecimal
     @NotNull
     @DecimalMin("0.01")
     @DecimalMax("9999999999.99")
@@ -52,6 +55,7 @@ public class RendaFixa {
 
     private double valorTotalCompra;
 
+    @PontoDecimal
     @NotNull
     @DecimalMin("0.01")
     @DecimalMax("9999999999.99")

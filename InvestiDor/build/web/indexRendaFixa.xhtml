@@ -7,7 +7,9 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:c="http://java.sun.com/jsp/jstl/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    
     <h:head>
+        <link rel="stylesheet" href="stylesheet/rendafixa.css"> </link>
         <title>Tela inicial</title>
     </h:head>
     <h:body>
@@ -15,13 +17,13 @@
         <ui:include src="MenuUsuario.xhtml"/>
 
         <b:form id="formIndexRendaFixa" >
-            <b:button icon="glyphicon glyphicon-plus" style-class="btn btn-primary" onclick="$('#modalCriaInvestimento').modal('show')"></b:button>
+            <b:button icon="glyphicon glyphicon-plus" style-class="btn btn-primary my-button" onclick="$('#modalCriaInvestimento').modal('show')"></b:button>
         </b:form>
 
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
         <script>
-            let lista = [];
-            lista.push(['Nome', 'Valor']);
+                let lista = [];
+                lista.push(['Nome', 'Valor']);
 
         </script>
 
@@ -93,38 +95,42 @@
         </b:modal>
 
         <b:form id="formCards">
-            <div style="display: flex">
+            <div class="button-container">
+                <div class="cards-container">
+                    <c:forEach items="#{usuarioController.lerTodasRendasFixasPorUsuario(loginController.usuarioLogado.id)}"
+                               var="item" varStatus="i">
 
-                <c:forEach items="#{usuarioController.lerTodasRendasFixasPorUsuario(loginController.usuarioLogado.id)}"
-                           var="item" varStatus="i">
-
-                    <c:if  test="#{i.index le 100}">
-
-                        <p:card style="width: 25rem; margin-bottom: 2em; margin-left: 2em">
-                            <f:facet name="header"><h3>#{item.nome}</h3></f:facet>
-                            <f:facet name="header"><h3>R$ #{item.valorTotalAtual}</h3></f:facet>
-                            <p:commandButton style="width: 16%; margin-bottom: 5%; margin-left: 10%" icon="glyphicon glyphicon-search"
-                                             oncomplete="$('.modalVisualizarInvestimento').modal('show')"
-                                             ajax='true' update=":modalVisualizarInvestimento">
-                                <f:setPropertyActionListener value="#{item}" 
-                                                             target="#{fixaController.rendafixasel}"/>
-                            </p:commandButton>
-                            <p:commandButton style="width: 16%; margin-bottom: 5%; margin-left: 15%" icon="glyphicon glyphicon-pencil" oncomplete="$('.modalAtualizar').modal('show')"
-                                             update=":modalAtualizar" ajax="true">
-                                <f:setPropertyActionListener value="#{item}" target="#{fixaController.rendafixasel}"/>
-                            </p:commandButton>   
-                            <p:commandButton style="width: 16%; margin-bottom: 5%; margin-left: 15%" icon="glyphicon glyphicon-remove"  oncomplete="$('.modalDeletar').modal('show')"
-                                             update=":modalDeletar" ajax="true">
-                                <f:setPropertyActionListener value="#{item}" target="#{fixaController.rendafixasel}"/>
-                            </p:commandButton>
-                        </p:card>
-
-                    </c:if>
-                </c:forEach>
-
+                        <c:if test="#{i.index le 100}">
+                            <p:card styleClass="card">
+                                <f:facet name="header">
+                                    <h3 class="card-header">#{item.nome}</h3>
+                                </f:facet>
+                                <f:facet name="header">
+                                    <h3>R$ #{item.valorTotalAtual}</h3>
+                                </f:facet>
+                                <div class="card-buttons">
+                                    <p:commandButton icon="glyphicon glyphicon-search"
+                                                     oncomplete="$('.modalVisualizarInvestimento').modal('show')"
+                                                     ajax="true" update=":modalVisualizarInvestimento">
+                                        <f:setPropertyActionListener value="#{item}" target="#{fixaController.rendafixasel}" />
+                                    </p:commandButton>
+                                    <p:commandButton icon="glyphicon glyphicon-pencil"
+                                                     oncomplete="$('.modalAtualizar').modal('show')" update=":modalAtualizar"
+                                                     ajax="true">
+                                        <f:setPropertyActionListener value="#{item}" target="#{fixaController.rendafixasel}" />
+                                    </p:commandButton>
+                                    <p:commandButton icon="glyphicon glyphicon-remove"
+                                                     oncomplete="$('.modalDeletar').modal('show')" update=":modalDeletar"
+                                                     ajax="true">
+                                        <f:setPropertyActionListener value="#{item}" target="#{fixaController.rendafixasel}" />
+                                    </p:commandButton>
+                                </div>
+                            </p:card>
+                        </c:if>
+                    </c:forEach>
+                </div>
             </div>
         </b:form>
-
 
         <b:modal id="modalVisualizarInvestimento" class="modalVisualizarInvestimento fade" 
                  title="#{fixaController.rendafixasel.nome}">
@@ -139,7 +145,7 @@
                 <h:outputText value="#{fixaController.rendafixasel.valorUnitarioCompra}"/>
                 <h:outputText value="Valor unitário atual:"/>
                 <h:outputText value="#{fixaController.rendafixasel.valorUnitarioAtual}"/>
-                 <h:outputText value="Valor total de compra:"/>
+                <h:outputText value="Valor total de compra:"/>
                 <h:outputText value="#{fixaController.rendafixasel.valorTotalCompra}"/>
                 <h:outputText value="Valor total atual:"/>
                 <h:outputText value="#{fixaController.rendafixasel.valorTotalAtual}"/>
