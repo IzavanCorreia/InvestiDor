@@ -245,7 +245,7 @@ public class UsuarioController {
 
         List<RendaVariavel> rendasVariaveis = lerTodasRendasVariaveisPorUsuario(id);
         for (RendaVariavel rv : rendasVariaveis) {
-            valorTotalVariavel += rv.getValorCompra();
+            valorTotalVariavel += rv.getValorAtualTotal();
         }
 
         return valorTotalVariavel;
@@ -257,7 +257,7 @@ public class UsuarioController {
 
         List<RendaVariavel> rendasVariaveis = lerTodasRendasVariaveisPorUsuario(id);
         for (RendaVariavel rv : rendasVariaveis) {
-            valorTotalVariavelCompra += rv.getValorCompra();
+            valorTotalVariavelCompra += rv.getValorCompraTotal();
         }
 
         return valorTotalVariavelCompra;

@@ -2,13 +2,211 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
-        <title>Facelet Title</title>
+        <link rel="stylesheet" href="stylesheet/rendavariavel.css"> </link>
+        <title>Tela de Renda Variável</title>
     </h:head>
     <h:body>
-         <ui:include src="MenuUsuario.xhtml"/>
-        Hello from Facelets
+        <ui:include src="MenuUsuario.xhtml"/>
+
+        <b:form id="formIndexRendaVariavel" >
+            <b:button icon="glyphicon glyphicon-plus" style-class="btn btn-primary my-button" onclick="$('#modalCriaInvestimento').modal('show')"></b:button>
+        </b:form>
+
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script>
+                let lista = [];
+                lista.push(['Nome', 'Valor']);
+
+        </script>
+
+        <c:forEach items="#{usuarioController.lerTodasRendasVariaveisPorUsuario(loginController.usuarioLogado.id)}"
+                   var="item" varStatus="i">
+
+            <c:if  test="#{i.index le 100}">
+
+                <script> lista.push(['#{item.ticket.nome}', #{item.valorAtualTotal}]);
+                </script>
+
+            </c:if>
+        </c:forEach>
+
+        <script type="text/javascript">
+            google.charts.load('current', {'packages': ['corechart']});
+            google.charts.setOnLoadCallback(drawChart);
+
+            function drawChart() {
+                var data = google.visualization.arrayToDataTable(lista);
+                var options = {
+                    title: 'DASHBOARD'
+                };
+
+                var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+                chart.draw(data, options);
+            }
+        </script>
+
+        <div id="piechart" style="width: 900px; height: 500px;"></div>
+
+        <b:modal id="modalCriaInvestimento" title="Adicione um Investimento" style-class="modalCriaInvestimento">
+            <b:form id="formCadInvestimento" enctype="multipart/form-data">
+                <b:formGroup>
+                    <div style="display: flex">
+                        <b:panelGrid columns="2">
+                            <h:outputText value="Ticket:"/>
+                            <b:selectOneMenu value="#{variavelController.rendavariavel.ticket}">
+
+                                <c:forEach items="#{ticketController.readAllTicket()}"
+                                           var="item" varStatus="i">
+
+                                    <c:if  test="#{i.index le 50}">
+
+                                        <f:selectItem itemLabel="#{item.nome}" itemValue="#{item}"/>
+
+                                    </c:if>
+
+                                </c:forEach>
+
+                            </b:selectOneMenu>   
+
+                            <h:outputText value="Valor de compra:"/>
+                            <b:inputText value="#{variavelController.rendavariavel.valorCompra}"/>
+                            <h:outputText value="Quantidade:"/>
+                            <b:inputText value="#{variavelController.rendavariavel.quantidade}"/>  
+                            <h:outputText value="Data da compra:"/>
+                            <p:calendar value="#{variavelController.rendavariavel.dataCompra}" 
+                                        showOn="button" 
+                                        navigator="true" 
+                                        required="true" 
+                                        requiredMessage="Por favor, selecione a data da compra." />
+                        </b:panelGrid>
+                    </div>
+                    <b:commandButton value="Inserir o investimento" action="#{variavelController.cadastrar()}"/>
+
+                </b:formGroup>
+            </b:form>
+        </b:modal>
+
+        <b:form id="formCards">
+            <div class="button-container">
+                <div class="cards-container">
+                    <c:forEach items="#{usuarioController.lerTodasRendasVariaveisPorUsuario(loginController.usuarioLogado.id)}"
+                               var="item" varStatus="i">
+
+                        <c:if test="#{i.index le 100}">
+                            <p:card styleClass="card">
+                                <f:facet name="header">
+                                    <h3 class="card-header">#{item.ticket.nome}</h3>
+                                </f:facet>
+                                <f:facet name="header">
+                                    <h3>R$ #{item.valorAtualTotal}</h3>
+                                </f:facet>
+                                <div class="card-buttons">
+                                    <p:commandButton icon="glyphicon glyphicon-search"
+                                                     oncomplete="$('.modalVisualizarInvestimento').modal('show')"
+                                                     ajax="true" update=":modalVisualizarInvestimento">
+                                        <f:setPropertyActionListener value="#{item}" target="#{variavelController.rendavariavelsel}" />
+                                    </p:commandButton>
+                                    <p:commandButton icon="glyphicon glyphicon-pencil"
+                                                     oncomplete="$('.modalAtualizar').modal('show')" update=":modalAtualizar"
+                                                     ajax="true">
+                                        <f:setPropertyActionListener value="#{item}" target="#{variavelController.rendavariavelsel}" />
+                                    </p:commandButton>
+                                    <p:commandButton icon="glyphicon glyphicon-remove"
+                                                     oncomplete="$('.modalDeletar').modal('show')" update=":modalDeletar"
+                                                     ajax="true">
+                                        <f:setPropertyActionListener value="#{item}" target="#{variavelController.rendavariavelsel}" />
+                                    </p:commandButton>
+                                </div>
+                            </p:card>
+                        </c:if>
+                    </c:forEach>
+                </div>
+            </div>
+        </b:form>
+
+        <b:modal id="modalVisualizarInvestimento" class="modalVisualizarInvestimento fade" 
+                 title="#{variavelController.rendavariavelsel.ticket.nome}">
+
+            <h4>Informações do Investimento</h4>
+            <b:panelGrid columns="2">
+                <h:outputText value="Nome da empresa:"/>
+                <h:outputText value="#{variavelController.rendavariavelsel.ticket.nomeEmpresa}"/>
+                <h:outputText value="Quantidade:"/>
+                <h:outputText value="#{variavelController.rendavariavelsel.quantidade}"/>
+                <h:outputText value="Valor de compra:"/>
+                <h:outputText value="#{variavelController.rendavariavelsel.valorCompra}"/>
+                <h:outputText value="Valor total de compra:"/>
+                <h:outputText value="#{variavelController.rendavariavelsel.valorCompraTotal}"/>
+                <h:outputText value="Valor atual:"/>
+                <h:outputText value="#{variavelController.rendavariavelsel.ticket.valorAtual}"/>
+                <h:outputText value="Valor total atual:"/>
+                <h:outputText value="#{variavelController.rendavariavelsel.valorAtualTotal}"/>
+                <h:outputText value="Data de compra:"/>
+                <h:outputText value="#{variavelController.rendavariavelsel.dataCompraFormatada}"/>
+                <h:outputText value="Tipo do ticket:"/>
+                <h:outputText value="#{variavelController.rendavariavelsel.ticket.tipoTicket}"/>
+            </b:panelGrid>
+        </b:modal>
+
+        <b:modal id="modalAtualizar" style-class="modalAtualizar fade"
+                 title="Alterar os dados do investimento: #{variavelController.rendavariavelsel.ticket.nome}">
+
+            <b:form id="formAlt">
+                <b:formGroup>
+                    <div style="display: flex">
+                        <b:panelGrid columns="2">
+                            <h:outputText value="Ticket:"/>
+                            <b:selectOneMenu value="#{variavelController.rendavariavelsel.ticket}">
+
+                                <c:forEach items="#{ticketController.readAllTicket()}"
+                                           var="item" varStatus="i">
+
+                                    <c:if  test="#{i.index le 50}">
+
+                                        <f:selectItem itemLabel="#{item.nome}" itemValue="#{item}"/>
+
+                                    </c:if>
+
+                                </c:forEach>
+
+                            </b:selectOneMenu>   
+
+                            <h:outputText value="Valor de compra:"/>
+                            <b:inputText value="#{variavelController.rendavariavelsel.valorCompra}"/>
+                            <h:outputText value="Quantidade:"/>
+                            <b:inputText value="#{variavelController.rendavariavelsel.quantidade}"/>  
+                            <h:outputText value="Data da compra:"/>
+                            <p:calendar value="#{variavelController.rendavariavelsel.dataCompra}" 
+                                        showOn="button" 
+                                        navigator="true" 
+                                        required="true" 
+                                        requiredMessage="Por favor, selecione a data da compra." />
+
+                        </b:panelGrid>
+                    </div>
+
+                    <b:commandButton value="Alterar" action="#{variavelController.alterar()}" 
+                                     oncomplete="$('.formAlt').modal('hide')"/>
+                </b:formGroup>
+            </b:form>
+
+        </b:modal>
+
+        <b:modal id="modalDeletar" style-class="modalDeletar fade"
+                 title="Tem certeza que deseja apagar o investimento #{variavelController.rendavariavelsel.ticket.nome}?">
+            <b:form id="formDel">
+                <b:commandButton value="Sim" action="#{variavelController.deletar()}" 
+                                 oncomplete="$('.formDel').modal('hide')"/>
+            </b:form>
+        </b:modal>
+
     </h:body>
 </html>
 

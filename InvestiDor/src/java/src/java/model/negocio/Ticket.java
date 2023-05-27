@@ -13,6 +13,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import src.java.model.validacao.PontoDecimal;
 
 /**
  *
@@ -25,12 +30,21 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     
+    @NotNull(message = "O campo nome não pode ser nulo")
+    @Size(min = 1, max = 100)
     private String nome;
     
-    private String nomeEmpresa;
+    @NotNull(message = "O campo nome não pode ser nulo")
+    @Size(min = 1, max = 200)
+    private String nomeEmpresa;  
     
+    @PontoDecimal
+    @NotNull(message = "O campo nome não pode ser nulo")
+    @DecimalMin("0.01")
+    @DecimalMax("99999.99")
     private double valorAtual;
     
+    @NotNull(message = "O campo nome não pode ser nulo")
     private String tipoTicket;
     
     @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL, orphanRemoval = true)

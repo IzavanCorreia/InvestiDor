@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package src.java.controllers;
 
 import java.util.List;
@@ -13,7 +18,8 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import src.java.model.dao.ManagerDao;
-import src.java.model.negocio.RendaFixa;
+import src.java.model.negocio.RendaVariavel;
+import src.java.model.negocio.Ticket;
 import src.java.model.negocio.Usuario;
 
 /**
@@ -22,15 +28,16 @@ import src.java.model.negocio.Usuario;
  */
 @ManagedBean
 @SessionScoped
-public class FixaController {
+public class VariavelController {
 
-    private RendaFixa rendafixa;
-    private RendaFixa rendafixasel;
+    private RendaVariavel rendavariavel;
+    private RendaVariavel rendavariavelsel;
+    private Ticket ticket;
 
     @PostConstruct
     public void init() {
-        this.rendafixa = new RendaFixa();
-        this.rendafixasel = null;
+        this.rendavariavel = new RendaVariavel();
+        this.rendavariavelsel = new RendaVariavel();
     }
 
     public void cadastrar() {
@@ -41,16 +48,15 @@ public class FixaController {
                 getCurrentInstance().getExternalContext().getSession(true))).
                 getAttribute("loginController")).getUsuarioLogado();
 
-        rendafixa.setUsuario(usuario);
-        rendafixa.setDataInicialString();
-        rendafixa.setDataFinalString();
-        rendafixa.setValorTotalCompra();
-        rendafixa.setValorTotalAtual();
+        rendavariavel.setUsuario(usuario);
+        rendavariavel.setDataCompraFormatada();
+        rendavariavel.setValorCompraTotal();
+        rendavariavel.setValorAtualTotal();
 
-        Set<ConstraintViolation<RendaFixa>> violations = validator.validate(rendafixa);
+        Set<ConstraintViolation<RendaVariavel>> violations = validator.validate(rendavariavel);
 
         if (!violations.isEmpty()) {
-            for (ConstraintViolation<RendaFixa> violation : violations) {
+            for (ConstraintViolation<RendaVariavel> violation : violations) {
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, violation.getMessage(), null);
                 if (!FacesContext.getCurrentInstance().getMessageList().contains(message)) {
                     FacesContext.getCurrentInstance().addMessage(null, message);
@@ -59,9 +65,9 @@ public class FixaController {
             return;
         }
 
-        ManagerDao.getCurrentInstance().insert(rendafixa);
+        ManagerDao.getCurrentInstance().insert(rendavariavel);
 
-        this.rendafixa = new RendaFixa();
+        this.rendavariavel = new RendaVariavel();
 
         FacesMessage successMessage = new FacesMessage("Investimento inserido com sucesso");
         if (!FacesContext.getCurrentInstance().getMessageList().contains(successMessage)) {
@@ -70,52 +76,51 @@ public class FixaController {
     }
 
     public void deletar() {
-        if (rendafixasel == null) {
+        if (rendavariavelsel == null) {
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "Nenhum investimento selecionado para deletar!", null));
             return;
         }
 
-        ManagerDao.getCurrentInstance().delete(this.rendafixasel);
+        ManagerDao.getCurrentInstance().delete(this.rendavariavelsel);
 
         FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage("Renda fixa deletada com sucesso!"));
+                new FacesMessage("Renda variavel deletada com sucesso!"));
     }
 
     public void clearSelection() {
-        this.rendafixasel = null;
+        this.rendavariavelsel = null;
 
     }
 
-    public RendaFixa getRendafixasel() {
-        return rendafixasel;
+    public RendaVariavel getRendavariavelsel() {
+        return rendavariavelsel;
     }
 
-    public void setRendafixasel(RendaFixa rendafixasel) {
-        this.rendafixasel = rendafixasel;
+    public void setRendavariavelsel(RendaVariavel rendavariavelsel) {
+        this.rendavariavelsel = rendavariavelsel;
     }
 
-    public RendaFixa getRendafixa() {
-        return rendafixa;
+    public RendaVariavel getRendavariavel() {
+        return rendavariavel;
     }
 
-    public void setRendafixa(RendaFixa rendafixa) {
-        this.rendafixa = rendafixa;
+    public void setRendavariavel(RendaVariavel rendavariavel) {
+        this.rendavariavel = rendavariavel;
     }
 
     public void alterar() {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
 
-        rendafixasel.setDataInicialString();
-        rendafixasel.setDataFinalString();
-        rendafixasel.setValorTotalCompra();
-        rendafixasel.setValorTotalAtual();
+        rendavariavelsel.setDataCompraFormatada();
+        rendavariavelsel.setValorCompraTotal();
+        rendavariavelsel.setValorAtualTotal();
 
-        Set<ConstraintViolation<RendaFixa>> violations = validator.validate(rendafixasel);
+        Set<ConstraintViolation<RendaVariavel>> violations = validator.validate(rendavariavelsel);
 
         if (!violations.isEmpty()) {
-            for (ConstraintViolation<RendaFixa> violation : violations) {
+            for (ConstraintViolation<RendaVariavel> violation : violations) {
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, violation.getMessage(), null);
                 if (!FacesContext.getCurrentInstance().getMessageList().contains(message)) {
                     FacesContext.getCurrentInstance().addMessage(null, message);
@@ -124,18 +129,26 @@ public class FixaController {
             return;
         }
 
-        ManagerDao.getCurrentInstance().update(rendafixasel);
+        ManagerDao.getCurrentInstance().update(rendavariavelsel);
 
-        FacesMessage successMessage = new FacesMessage("Renda fixa atualizada com sucesso!");
+        FacesMessage successMessage = new FacesMessage("Renda variavel atualizada com sucesso!");
         if (!FacesContext.getCurrentInstance().getMessageList().contains(successMessage)) {
             FacesContext.getCurrentInstance().addMessage(null, successMessage);
         }
     }
 
-    public List<RendaFixa> readAllRendaFixa() {
+    public List<RendaVariavel> readAllRendaVariavel() {
 
         return ManagerDao.getCurrentInstance()
-                .read("select r from RendaFixa r", RendaFixa.class);
+                .read("select r from RendaVariavel r", RendaVariavel.class);
+    }
+
+    public Ticket getTicket() {
+        return ticket;
+    }
+
+    public void setTicket(Ticket ticket) {
+        this.ticket = ticket;
     }
 
 }

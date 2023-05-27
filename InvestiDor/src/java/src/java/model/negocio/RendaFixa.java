@@ -34,21 +34,22 @@ public class RendaFixa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotNull
+    @NotNull(message = "O campo nome não pode ser nulo")
     @Size(min = 1, max = 100)
     private String nome;
 
+    @NotNull(message = "O campo nome não pode ser nulo")
     @Size(min = 1, max = 100)
     private String indexador;
 
     @PontoDecimal
-    @NotNull
+    @NotNull(message = "O campo nome não pode ser nulo")
     @DecimalMin("0.01")
     @DecimalMax("99999.99")
     private double quantidade;
 
     @PontoDecimal
-    @NotNull
+    @NotNull(message = "O campo nome não pode ser nulo")
     @DecimalMin("0.01")
     @DecimalMax("9999999999.99")
     private double valorUnitarioCompra;
@@ -56,22 +57,22 @@ public class RendaFixa {
     private double valorTotalCompra;
 
     @PontoDecimal
-    @NotNull
+    @NotNull(message = "O campo nome não pode ser nulo")
     @DecimalMin("0.01")
     @DecimalMax("9999999999.99")
     private double valorUnitarioAtual;
 
     private double valorTotalAtual;
 
-    @NotNull
+    @NotNull(message = "O campo nome não pode ser nulo")
     @Temporal(TemporalType.DATE)
     private Date dataInicial;
 
-    @NotNull
+    @NotNull(message = "O campo nome não pode ser nulo")
     @Temporal(TemporalType.DATE)
     private Date dataFinal;
 
-    @NotNull
+    @NotNull(message = "O campo nome não pode ser nulo")
     @Size(min = 1, max = 100)
     private String tipo;
 
