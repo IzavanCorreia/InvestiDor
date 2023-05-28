@@ -128,3 +128,10 @@ def pegarIdsCards(driver):
         ids.append(element.text)
     print(ids)
     return ids
+
+def diferencaSimetrica(lista1, lista2):
+    set1 = set(lista1)
+    set2 = set(lista2)
+    diff1 = set1 - set2
+    diff2 = set2 - set1
+    return list(diff1.union(diff2))
