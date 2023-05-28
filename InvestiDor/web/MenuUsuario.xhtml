@@ -28,12 +28,12 @@
                 </b:navbarLinks>
 
                 <b:navbarLinks style="float: right" pull="right">
-                    <b:dropMenu value="Usuario: #{(loginController.usuarioLogado ne null)?loginController.usuarioLogado.nome:''}">
+                    <b:dropMenu value="Usuario: #{(loginController.usuarioLogado ne null)?loginController.usuarioLogado.nome:''}" id="menu">
                         <b:navLink value="Meu Perfil" href='indexPerfil.xhtml'/>
                         <b:navLink value="Renda Fixa" href='indexRendaFixa.xhtml'/>
                         <b:navLink value="Renda Variável" href='indexRendaVariavel.xhtml'/>
                         <b:navLink value="Tutoriais" href='indexTutoriais.xhtml'/>
-                        <b:navCommandLink value="Sair"  action="#{loginController.logout()}"  href='index.xhtml'/>
+                        <b:navCommandLink value="Sair"  action="#{loginController.logout()}" id="logout" href='index.xhtml'/>
                     </b:dropMenu>
 
                 </b:navbarLinks>

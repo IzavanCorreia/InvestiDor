@@ -32,16 +32,16 @@
             <b:form id="formLogin">
                 <b:panelGrid columns="1">
                     <h:outputText value="login:"/>
-                    <b:inputText value="#{login}"/>
+                    <b:inputText value="#{login}" id="usuario"/>
 
                     <h:outputText value="senha:"/>
-                    <b:inputSecret value="#{senha}"/>
+                    <b:inputSecret value="#{senha}" id="senha_password"/>
                 </b:panelGrid>
                 <p:panel>
                     <h5>registre-se</h5>
                     <b:link value="Criar conta investidor" onclick="$('#modalCadUsuario').modal('show')"/><br/>
                 </p:panel>
-                <b:commandButton value="logar" style="float: right"
+                <b:commandButton id="botaologar" value="logar" style="float: right"
                                  style-class="btn btn-primary"
                                  action="#{loginController.logar(login, senha)}"/>
             </b:form>
