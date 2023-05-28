@@ -121,8 +121,10 @@ def criarRendafixa(driver,investimento):
 def pegarIdsCards(driver):
     elements = driver.find_elements(by="css selector", value=".ids")
     ids = []
+    
     # Iterar sobre os elementos encontrados
     for element in elements:
         # Fazer algo com cada elemento, por exemplo, imprimir seu texto
         ids.append(element.text)
+    print(ids)
     return ids
