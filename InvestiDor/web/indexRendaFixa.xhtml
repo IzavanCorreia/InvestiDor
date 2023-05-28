@@ -17,7 +17,7 @@
         <ui:include src="MenuUsuario.xhtml"/>
 
         <b:form id="formIndexRendaFixa" >
-            <b:button icon="glyphicon glyphicon-plus" style-class="btn btn-primary my-button" onclick="$('#modalCriaInvestimento').modal('show')"></b:button>
+            <b:button id="criarRendaFixa" icon="glyphicon glyphicon-plus" style-class="btn btn-primary my-button" onclick="$('#modalCriaInvestimento').modal('show')"></b:button>
         </b:form>
 
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -62,33 +62,33 @@
                 <b:formGroup>
                     <b:panelGrid columns="2">
                         <h:outputText value="Nome:"/>
-                        <b:inputText value="#{fixaController.rendafixa.nome}"/>
+                        <b:inputText value="#{fixaController.rendafixa.nome}" id="nome_rendafixa"/>
                         <h:outputText value="Indexador:"/>
-                        <b:inputText value="#{fixaController.rendafixa.indexador}"/>
+                        <b:inputText value="#{fixaController.rendafixa.indexador}" id="indexador"/>
                         <h:outputText value="Quantidade:"/>
-                        <b:inputText value="#{fixaController.rendafixa.quantidade}"/>
+                        <b:inputText value="#{fixaController.rendafixa.quantidade}" id="quantidade"/>
                         <h:outputText value="Valor unitário de compra:"/>
-                        <b:inputText value="#{fixaController.rendafixa.valorUnitarioCompra}"/>
+                        <b:inputText value="#{fixaController.rendafixa.valorUnitarioCompra}" id="valor_unit"/>
                         <h:outputText value="Valor unitário atual:"/>
-                        <b:inputText value="#{fixaController.rendafixa.valorUnitarioAtual}"/>
-                        <h:outputText value="Data inicial:"/>
-                        <p:calendar value="#{fixaController.rendafixa.dataInicial}" 
+                        <b:inputText value="#{fixaController.rendafixa.valorUnitarioAtual}" id="valor_atual"/>
+                        <h:outputText value="Data inicial:" />
+                        <p:calendar value="#{fixaController.rendafixa.dataInicial}" id="data_inicial"
                                     showOn="button" 
                                     navigator="true" 
                                     required="true" 
                                     requiredMessage="Por favor, selecione a data de início." />
                         <h:outputText value="Data final:"/>
-                        <p:calendar value="#{fixaController.rendafixa.dataFinal}" 
+                        <p:calendar value="#{fixaController.rendafixa.dataFinal}"  id="data_final"
                                     showOn="button" 
                                     navigator="true" 
                                     required="true" 
                                     requiredMessage="Por favor, selecione a data de fim." />
-                        <h:outputText value="Tipo:"/>
-                        <b:inputText value="#{fixaController.rendafixa.tipo}"/>
-                        <h:outputText value="Imposto:"/>
-                        <p:selectBooleanCheckbox value="#{fixaController.rendafixa.imposto}" itemLabel="sim" />
+                        <h:outputText value="Tipo:"  />
+                        <b:inputText value="#{fixaController.rendafixa.tipo}" id="tipo_investimento" />
+                        <h:outputText value="Imposto:"  />
+                        <p:selectBooleanCheckbox value="#{fixaController.rendafixa.imposto}" itemLabel="sim" id="imposto" />
                     </b:panelGrid>
-                    <b:commandButton value="Inserir o investimento" action="#{fixaController.cadastrar()}"/>
+                    <b:commandButton value="Inserir o investimento" action="#{fixaController.cadastrar()}" id="cadastrar_investimento" />
 
                 </b:formGroup>
             </b:form>
@@ -104,6 +104,8 @@
                             <p:card styleClass="card">
                                 <f:facet name="header">
                                     <h3 class="card-header">#{item.nome}</h3>
+                                    <h3 class="card-header ids" >#{item.id}</h3>
+
                                 </f:facet>
                                 <f:facet name="header">
                                     <h3>R$ #{item.valorTotalAtual}</h3>

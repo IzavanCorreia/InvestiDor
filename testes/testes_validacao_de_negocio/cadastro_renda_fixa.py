@@ -47,7 +47,7 @@ try:
 
     logging.info("Teste 3: Criar renda fixa")
 
-    logout_button = driver.find_element(By.ID, "formIndexRendaFixa:j_idt20")
+    logout_button = driver.find_element(By.ID, "formIndexRendaFixa:rendafixa")
     logout_button.click()
 
     nome_cdb = driver.find_element(By.ID, "input_formCadInvestimento:j_idt29")
