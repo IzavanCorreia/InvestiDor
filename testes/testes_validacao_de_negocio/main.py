@@ -1,7 +1,7 @@
 
-from keys import pegarloginesenha,criarInvestimento,criarInvestimentoDataInicialMaiorQueAFinal
+from keys import pegarloginesenha,criarInvestimento,criarInvestimentoDataInicialMaiorQueAFinal,criarInvestimentoEditar
 
-from testes import login,lougout,irRendaFixa,verificarTeste,criarRendafixa,pegarIdsCards,diferencaSimetrica
+from testes import login,lougout,irRendaFixa,verificarTeste,criarRendafixa,pegarIdsCards,diferencaSimetrica,editarRendafixa
 import logging
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -38,18 +38,35 @@ if ids_elementos != ids_elementos_depois:
         logging.info("Renda fixa criada bem-sucedido")
         num_tests_passed = num_tests_passed + 1
 
-        logging.info("Deletar elemento criado")
         for id_deletar in diferencaSimetrica(ids_elementos,ids_elementos_depois):
+                
+                logging.info("Editar elemento criado")
+
+                num_tests_passed,num_tests_failed = verificarTeste("Editando Renda Fixa", num_tests_passed,num_tests_failed , editarRendafixa(driver,criarInvestimentoEditar(),id_deletar))
+                
+
+
+                logging.info("Deletar elemento criado")
+                driver.get("http://localhost:8080/InvestiDor/faces/indexRendaFixa.xhtml")
 
                 investir_button = driver.find_element(By.ID, "formCards:deletar" + str(id_deletar))
                 investir_button.click()
+                driver.implicitly_wait(10)
+                import time
+                time.sleep(10)
+
                 investir_button = driver.find_element(By.ID, "formDel:certeza" + str(id_deletar))
                 investir_button.click()
                 driver.implicitly_wait(10)
-                logging.info(f"Id {id_deletar} Deletado!")
+                
                
-        
-        num_tests_passed = num_tests_passed + 1
+        verificar_se_deletou = pegarIdsCards(driver)
+        if ids_elementos == verificar_se_deletou:
+                logging.info(f"Id {id_deletar} Deletado!")
+                num_tests_passed = num_tests_passed + 1
+        else:
+                logging.info(f"Id {id_deletar} não foi Deletado!")
+                num_tests_failed = num_tests_failed + 1
 else:
     logging.info("Renda fixa falhou!")
     num_tests_failed = num_tests_failed + 1

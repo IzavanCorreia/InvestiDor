@@ -37,7 +37,7 @@ def lougout(driver):
 
 
 def irRendaFixa(driver):
-    driver.get("http://localhost:8080/InvestiDor/faces/indexResumo.xhtml")
+    driver.get("http://localhost:8080/InvestiDor/faces/indexRendaFixa.xhtml")
 
     logout_button = driver.find_element(By.ID, "formMenuUsuario:menu")
     logout_button.click()
@@ -60,6 +60,7 @@ def verificarTeste(texto,testepassou,testefalhou,retorno):
 
 def criarRendafixa(driver,investimento):
 
+    driver.get("http://localhost:8080/InvestiDor/faces/indexRendaFixa.xhtml")
 
 
     logout_button = driver.find_element(By.ID, "formIndexRendaFixa:criarRendaFixa")
@@ -99,6 +100,7 @@ def criarRendafixa(driver,investimento):
     
 
     data_final_input = driver.find_element(By.ID, "formCadInvestimento:data_final_input")
+    data_final_input.clear()
     data_final_input.send_keys(str(investimento.data_final))
 
     data_texto = str(investimento.data_inicial)
@@ -119,6 +121,8 @@ def criarRendafixa(driver,investimento):
     #logging.info("Renda criado bem-sucedido")
 
 def pegarIdsCards(driver):
+    driver.get("http://localhost:8080/InvestiDor/faces/indexRendaFixa.xhtml")
+
     elements = driver.find_elements(by="css selector", value=".ids")
     ids = []
     
@@ -135,3 +139,72 @@ def diferencaSimetrica(lista1, lista2):
     diff1 = set1 - set2
     diff2 = set2 - set1
     return list(diff1.union(diff2))
+
+
+
+def editarRendafixa(driver,investimento,id_editar):
+    driver.get("http://localhost:8080/InvestiDor/faces/indexRendaFixa.xhtml")
+
+
+    investir_button = driver.find_element(By.ID, "formCards:editar" + str(id_editar))
+    investir_button.click()
+
+
+    nome_cdb = driver.find_element(By.ID, "input_formAlt:nomeEditar"+ str(id_editar))
+    print(investimento.nome)
+    nome_cdb.clear()
+
+    nome_cdb.send_keys(investimento.nome)
+    indexador_input = driver.find_element(By.ID, "input_formAlt:indexadorEditar"+ str(id_editar))
+    indexador_input.clear()
+    indexador_input.send_keys(investimento.indexador)
+
+    quantidade_input = driver.find_element(By.ID, "input_formAlt:quantidadeEditar"+ str(id_editar))
+
+    quantidade_input.clear()
+
+    quantidade_input.send_keys(investimento.quantidade)
+
+    valor_unitario_input = driver.find_element(By.ID, "input_formAlt:valor_unitEditar"+ str(id_editar))
+
+    valor_unitario_input.clear()
+
+
+    valor_unitario_input.send_keys(investimento.valor_unit)
+    valor_unitario_atual_input = driver.find_element(By.ID, "input_formAlt:valor_atualEditar"+ str(id_editar))
+    valor_unitario_atual_input.clear()
+
+
+    valor_unitario_atual_input.send_keys(investimento.valor_atual)
+
+    data_inicio_input = driver.find_element(By.ID, f"formAlt:data_inicialEditar{id_editar}_input")
+    #data_inicio_input.send_keys(str(investimento.data_inicial))
+
+    
+
+
+
+
+    data_final_input = driver.find_element(By.ID, f"formAlt:data_finalEditar{id_editar}_input")
+    data_final_input.clear()
+
+    data_final_input.send_keys(str(investimento.data_final))
+
+    data_texto = str(investimento.data_inicial)
+    data_inicio_input.clear()
+
+
+    data_inicio_input.send_keys(data_texto)
+
+    tipo_input = driver.find_element(By.ID, "input_formAlt:tipo_investimentoEditar"+ str(id_editar))
+    tipo_input.clear()
+    tipo_input.send_keys(investimento.tipo_investimento)
+
+    #investir_button = driver.find_element(By.ID, "input_formAlt:impostoEditar"+ str(id_editar))
+    #investir_button.click()
+
+    investir_button = driver.find_element(By.ID, "formAlt:botarEditar"+ str(id_editar))
+    investir_button.click()
+    driver.implicitly_wait(10)
+    #assert driver.current_url == "http://localhost:8080/InvestiDor/faces/indexRendaFixa.xhtml"
+    #logging.info("Renda criado bem-sucedido")
