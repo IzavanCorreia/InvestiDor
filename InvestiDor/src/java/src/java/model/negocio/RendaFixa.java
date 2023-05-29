@@ -5,6 +5,7 @@
  */
 package src.java.model.negocio;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.persistence.Entity;
@@ -81,6 +82,9 @@ public class RendaFixa {
     private String dataInicialString;
     private String dataFinalString;
 
+    private String valorCompraTotalFormatado;
+    private String valorAtualTotalFormatado;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
@@ -139,6 +143,7 @@ public class RendaFixa {
 
     public void setValorTotalCompra() {
         this.valorTotalCompra = getValorUnitarioCompra() * quantidade;
+        setValorCompraTotalFormatado(valorTotalCompra);
     }
 
     public double getValorTotalAtual() {
@@ -147,6 +152,7 @@ public class RendaFixa {
 
     public void setValorTotalAtual() {
         this.valorTotalAtual = getValorUnitarioAtual() * quantidade;
+        setValorAtualTotalFormatado(valorTotalAtual);
     }
 
     public Usuario getUsuario() {
@@ -216,4 +222,21 @@ public class RendaFixa {
         return dataFinal.after(dataInicial);
     }
 
+    public String getValorCompraTotalFormatado() {
+        return valorCompraTotalFormatado;
+    }
+
+    public void setValorCompraTotalFormatado(double valorTotalCompra) {
+        DecimalFormat df = new DecimalFormat("#.00"); // Define o padrão de formatação com duas casas decimais
+        this.valorCompraTotalFormatado = df.format(valorTotalCompra); // Formata o número original
+    }
+
+    public String getValorAtualTotalFormatado() {
+        return valorAtualTotalFormatado;
+    }
+
+    public void setValorAtualTotalFormatado(double valorTotalAtual) {
+        DecimalFormat df = new DecimalFormat("#.00"); // Define o padrão de formatação com duas casas decimais
+        this.valorAtualTotalFormatado = df.format(valorTotalAtual);
+    }
 }

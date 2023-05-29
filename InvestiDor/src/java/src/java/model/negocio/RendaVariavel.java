@@ -5,6 +5,7 @@
  */
 package src.java.model.negocio;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.persistence.Entity;
@@ -60,6 +61,9 @@ public class RendaVariavel {
     @JoinColumn(name = "ticket_id")
     private Ticket ticket;
 
+    private String valorCompraTotalFormatado;
+    private String valorAtualTotalFormatado;
+
     public int getId() {
         return id;
     }
@@ -82,6 +86,7 @@ public class RendaVariavel {
 
     public void setValorCompraTotal() {
         this.valorCompraTotal = valorCompra * quantidade;
+        setValorCompraTotalFormatado(valorCompraTotal);
     }
 
     public double getValorAtualTotal() {
@@ -90,6 +95,7 @@ public class RendaVariavel {
 
     public void setValorAtualTotal() {
         this.valorAtualTotal = ticket.getValorAtual() * quantidade;
+        setValorAtualTotalFormatado(valorAtualTotal);
     }
 
     public Date getDataCompra() {
@@ -133,6 +139,24 @@ public class RendaVariavel {
         Date data = getDataCompra();
         String dataFormatada = formatador.format(data);
         this.dataCompraFormatada = dataFormatada;
+    }
+
+    public String getValorCompraTotalFormatado() {
+        return valorCompraTotalFormatado;
+    }
+
+    public void setValorCompraTotalFormatado(double valorCompraTotal) {
+        DecimalFormat df = new DecimalFormat("#.00"); // Define o padrão de formatação com duas casas decimais
+        this.valorCompraTotalFormatado = df.format(valorCompraTotal); // Formata o número original
+    }
+
+    public String getValorAtualTotalFormatado() {
+        return valorAtualTotalFormatado;
+    }
+
+    public void setValorAtualTotalFormatado(double valorAtualTotal) {
+        DecimalFormat df = new DecimalFormat("#.00"); // Define o padrão de formatação com duas casas decimais
+        this.valorAtualTotalFormatado = df.format(valorAtualTotal);
     }
 
 }
