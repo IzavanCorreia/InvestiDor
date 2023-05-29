@@ -5,7 +5,9 @@
  */
 package src.java.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -33,11 +35,18 @@ public class VariavelController {
     private RendaVariavel rendavariavel;
     private RendaVariavel rendavariavelsel;
     private Ticket ticket;
+    private Set<Ticket> tickets;  // Lista de tickets disponíveis
+    private Ticket ticketSelecionado;  // Ticket selecionado
 
     @PostConstruct
     public void init() {
         this.rendavariavel = new RendaVariavel();
         this.rendavariavelsel = new RendaVariavel();
+        this.tickets = new HashSet<>();
+
+        // Recupere os tickets do banco de dados e adicione à lista
+        List<Ticket> ticketsFromDatabase = ManagerDao.getCurrentInstance().read("SELECT t FROM Ticket t", Ticket.class);
+        tickets.addAll(ticketsFromDatabase);
     }
 
     public void cadastrar() {
@@ -117,6 +126,8 @@ public class VariavelController {
         rendavariavelsel.setValorCompraTotal();
         rendavariavelsel.setValorAtualTotal();
 
+        ticketSelecionado = rendavariavelsel.getTicket();
+
         Set<ConstraintViolation<RendaVariavel>> violations = validator.validate(rendavariavelsel);
 
         if (!violations.isEmpty()) {
@@ -149,6 +160,38 @@ public class VariavelController {
 
     public void setTicket(Ticket ticket) {
         this.ticket = ticket;
+    }
+
+    public List<Ticket> getTicketsDisponiveis() {
+        List<Ticket> listaTickets = new ArrayList<>();
+
+        for (Ticket ticket : tickets) {
+            if (rendavariavelsel == null || !ticket.equals(rendavariavelsel.getTicket())) {
+                listaTickets.add(ticket);
+            }
+        }
+
+        if (rendavariavelsel != null && rendavariavelsel.getTicket() != null) {
+            listaTickets.add(rendavariavelsel.getTicket());
+        }
+
+        return listaTickets;
+    }
+
+    public Set<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(Set<Ticket> tickets) {
+        this.tickets = tickets;
+    }
+
+    public Ticket getTicketSelecionado() {
+        return ticketSelecionado;
+    }
+
+    public void setTicketSelecionado(Ticket ticketSelecionado) {
+        this.ticketSelecionado = ticketSelecionado;
     }
 
 }

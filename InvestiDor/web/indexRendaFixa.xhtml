@@ -114,7 +114,7 @@
 
                                 </f:facet>
                                 <f:facet name="header">
-                                    <h3>R$ #{item.valorTotalAtual}</h3>
+                                    <h3>R$ #{item.valorAtualTotalFormatado}</h3>
                                 </f:facet>
                                 <div class="card-buttons">
                                     <p:commandButton icon="glyphicon glyphicon-search"
@@ -155,9 +155,9 @@
                 <h:outputText value="Valor unitário atual:"/>
                 <h:outputText value="#{fixaController.rendafixasel.valorUnitarioAtual}"/>
                 <h:outputText value="Valor total de compra:"/>
-                <h:outputText value="#{fixaController.rendafixasel.valorTotalCompra}"/>
+                <h:outputText value="#{fixaController.rendafixasel.valorCompraTotalFormatado}"/>
                 <h:outputText value="Valor total atual:"/>
-                <h:outputText value="#{fixaController.rendafixasel.valorTotalAtual}"/>
+                <h:outputText value="#{fixaController.rendafixasel.valorAtualTotalFormatado}"/>
                 <h:outputText value="Data inicial:"/>
                 <h:outputText value="#{fixaController.rendafixasel.dataInicialString}"/>
                 <h:outputText value="Data final:"/>
