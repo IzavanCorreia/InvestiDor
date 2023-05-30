@@ -51,7 +51,7 @@ body{
     display: flex;
     justify-content: center;
     gap: 12%;
-    margin-bottom: 20%;
+    margin-bottom: 3vh;
 }
 
 .video-container iframe {

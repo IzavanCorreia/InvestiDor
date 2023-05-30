@@ -18,6 +18,44 @@ def login(email,password,driver):
         return 1
     except:
         return 0
+    
+def registrar(cpf,nome,sobrenome,telefone,email,password,driver):
+        driver.get("http://localhost:8080/InvestiDor/faces/index.xhtml")
+        driver.implicitly_wait(10)
+
+        logout_button = driver.find_element(By.ID, "formLogin:irparamodalregistrar")
+        logout_button.click()
+        #driver.get("http://localhost:8080/InvestiDor/faces/index.xhtml")
+        user_input = driver.find_element(By.ID, "input_formCadPuxador:cpf_registraraa")
+        user_input.send_keys(cpf)
+        password_input = driver.find_element(By.ID, "input_formCadPuxador:nome_registraraa")
+        password_input.send_keys(nome)
+
+        password_input = driver.find_element(By.ID, "input_formCadPuxador:sobrenome_registraraa")
+        password_input.send_keys(sobrenome)
+
+
+        password_input = driver.find_element(By.ID, "input_formCadPuxador:telefone_registraraa")
+        password_input.send_keys(telefone)
+
+
+        password_input = driver.find_element(By.ID, "input_formCadPuxador:email_registraraa")
+        password_input.send_keys(email)
+
+
+        password_input = driver.find_element(By.ID, "input_formCadPuxador:senha_registraraa")
+        password_input.send_keys(password)
+
+
+        password_input = driver.find_element(By.ID, "input_formCadPuxador:senha_registrar")
+        password_input.send_keys(password)
+        driver.implicitly_wait(10)
+
+        login_button = driver.find_element(By.ID, "formCadPuxador:criarconta_registraraa")
+        login_button.click()
+        driver.implicitly_wait(10)
+        return 1
+ 
 def lougout(driver):
     try:
         # Teste 2: Logout do sistema

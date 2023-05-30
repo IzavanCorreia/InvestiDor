@@ -1,7 +1,7 @@
 
 from keys import pegarloginesenha,criarInvestimento,criarInvestimentoDataInicialMaiorQueAFinal,criarInvestimentoEditar
 
-from testes import login,lougout,irRendaFixa,verificarTeste,criarRendafixa,pegarIdsCards,diferencaSimetrica,editarRendafixa
+from testes import login,lougout,irRendaFixa,verificarTeste,criarRendafixa,pegarIdsCards,diferencaSimetrica,editarRendafixa,registrar
 import logging
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -19,7 +19,11 @@ num_tests_failed = 0
 # Inicialize o driver do Chrome
 driver = webdriver.Chrome()
 
-email,senha = pegarloginesenha()
+email,senha,cpf,nome,sobrenome,telefone = pegarloginesenha()
+
+
+num_tests_passed,num_tests_failed = verificarTeste("Registro", num_tests_passed,num_tests_failed ,registrar(cpf,nome,sobrenome,telefone,email,senha,driver))
+
 logging.info("Iniciando teste de login...")
 num_tests_passed,num_tests_failed = verificarTeste("Login", num_tests_passed,num_tests_failed ,login(email,senha,driver))
 

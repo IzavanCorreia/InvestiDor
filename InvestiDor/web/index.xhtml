@@ -39,7 +39,7 @@
                 </b:panelGrid>
                 <p:panel>
                     <h5>registre-se</h5>
-                    <b:link value="Criar conta investidor" onclick="$('#modalCadUsuario').modal('show')"/><br/>
+                    <b:link id="irparamodalregistrar" value="Criar conta investidor" onclick="$('#modalCadUsuario').modal('show')"/><br/>
                 </p:panel>
                 <b:commandButton id="botaologar" value="logar" style="float: right"
                                  style-class="btn btn-primary"
@@ -57,27 +57,27 @@
                 <b:panelGrid columns="2">
 
                     <h:outputText value="CPF"/>
-                    <b:inputText value="#{usuarioController.usuario.cpf}"/>
+                    <b:inputText value="#{usuarioController.usuario.cpf}" id="cpf_registraraa"/>
 
                     <h:outputText value="Nome"/>
-                    <b:inputText value="#{usuarioController.usuario.nome}"/>
+                    <b:inputText value="#{usuarioController.usuario.nome}" id="nome_registraraa"/>
 
                     <h:outputText value="Sobrenome"/>
-                    <b:inputText value="#{usuarioController.usuario.sobrenome}"/>
+                    <b:inputText value="#{usuarioController.usuario.sobrenome}" id="sobrenome_registraraa"/>
 
                     <h:outputText value="Telefone"/>
-                    <b:inputText value="#{usuarioController.usuario.telefone}"/>
+                    <b:inputText value="#{usuarioController.usuario.telefone}" id="telefone_registraraa"/>
 
                     <h:outputText value="e-mail"/>
-                    <b:inputText value="#{usuarioController.usuario.email}"/>
+                    <b:inputText value="#{usuarioController.usuario.email}" id="email_registraraa"/>
 
                     <h:outputText value="Senha"/>
-                    <b:inputSecret value="#{usuarioController.usuario.senha}"/>
+                    <b:inputSecret value="#{usuarioController.usuario.senha}" id="senha_registraraa"/>
 
                     <h:outputText value="Confirma"/>
-                    <b:inputSecret value="#{confirma}"/>
+                    <b:inputSecret value="#{confirma}" id="senha_registrar"/>
                 </b:panelGrid>
-                <b:commandButton value="registrar" action="#{usuarioController.inserir(confirma)}"/>
+                <b:commandButton value="registrar" action="#{usuarioController.inserir(confirma)}" id="criarconta_registraraa"/>
             </b:form>
 
         </b:modal>
