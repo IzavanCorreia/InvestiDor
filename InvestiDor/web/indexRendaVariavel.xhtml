@@ -117,7 +117,7 @@
                                     </p:commandButton>
                                     <p:commandButton icon="glyphicon glyphicon-pencil"
                                                      oncomplete="$('.modalAtualizar').modal('show')" update=":modalAtualizar"
-                                                     ajax="true">
+                                                     ajax="true"  id="editaraqui#{item.id}">
                                         <f:setPropertyActionListener value="#{item}" target="#{variavelController.rendavariavelsel}" />
                                     </p:commandButton>
                                     <p:commandButton icon="glyphicon glyphicon-remove"
@@ -170,11 +170,11 @@
                             </b:selectOneMenu>
 
                             <h:outputText value="Valor de compra:"/>
-                            <b:inputText value="#{variavelController.rendavariavelsel.valorCompra}"/>
+                            <b:inputText value="#{variavelController.rendavariavelsel.valorCompra}" id="valor_compra#{variavelController.rendavariavelsel.id}"/>
                             <h:outputText value="Quantidade:"/>
-                            <b:inputText value="#{variavelController.rendavariavelsel.quantidade}"/>  
+                            <b:inputText value="#{variavelController.rendavariavelsel.quantidade}"  id="valor_quantidade#{variavelController.rendavariavelsel.id}" />  
                             <h:outputText value="Data da compra:"/>
-                            <p:calendar value="#{variavelController.rendavariavelsel.dataCompra}" 
+                            <p:calendar value="#{variavelController.rendavariavelsel.dataCompra}"  id="data_compra#{variavelController.rendavariavelsel.id}" 
                                         showOn="button" 
                                         navigator="true" 
                                         required="true" 
@@ -184,7 +184,7 @@
                     </div>
 
                     <b:commandButton value="Alterar" action="#{variavelController.alterar()}" 
-                                     oncomplete="$('.formAlt').modal('hide')"/>
+                                     oncomplete="$('.formAlt').modal('hide')" id="editar_variavel#{variavelController.rendavariavelsel.id}"/>
                 </b:formGroup>
             </b:form>
         </b:modal>

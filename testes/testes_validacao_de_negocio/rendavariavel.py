@@ -1,7 +1,7 @@
 
 from keys import pegarloginesenha,criarInvestimento,criarInvestimentoDataInicialMaiorQueAFinal,criarInvestimentoEditar
 
-from testes import login,lougout,irRendaFixa,verificarTeste,criarRendafixa,pegarIdsCards,diferencaSimetrica,editarRendafixa,registrar,pegarIdsCardsRendaVariavel
+from testes import login,lougout,irRendaFixa,verificarTeste,criarRendafixa,pegarIdsCards,diferencaSimetrica,editarRendaVariavel,registrar,pegarIdsCardsRendaVariavel
 import logging
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -68,11 +68,11 @@ if ids_elementos != ids_elementos_depois:
         logging.info("Renda variavel criada bem-sucedido")
         num_tests_passed = num_tests_passed + 1
         for id_deletar in diferencaSimetrica(ids_elementos,ids_elementos_depois):
-                """
+                
                 logging.info("Editar elemento criado")
 
-                num_tests_passed,num_tests_failed = verificarTeste("Editando Renda Fixa", num_tests_passed,num_tests_failed , editarRendafixa(driver,criarInvestimentoEditar(),id_deletar))
-                """
+                num_tests_passed,num_tests_failed = verificarTeste("Editando Renda Editar", num_tests_passed,num_tests_failed , editarRendaVariavel(driver,criarInvestimentoEditar(),id_deletar))
+                
 
 
                 logging.info("Deletar elemento criado")

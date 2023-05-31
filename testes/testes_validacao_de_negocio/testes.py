@@ -262,3 +262,28 @@ def editarRendafixa(driver,investimento,id_editar):
     driver.implicitly_wait(10)
     #assert driver.current_url == "http://localhost:8080/InvestiDor/faces/indexRendaFixa.xhtml"
     #logging.info("Renda criado bem-sucedido")
+
+
+
+def editarRendaVariavel(driver,investimento,id_editar):
+    driver.get("http://localhost:8080/InvestiDor/faces/indexRendaVariavel.xhtml")
+
+
+    investir_button = driver.find_element(By.ID, "formCards:editaraqui" + str(id_editar))
+    investir_button.click()
+
+
+    nome_cdb = driver.find_element(By.ID, "input_formAlt:valor_compra"+ str(id_editar))
+    nome_cdb.clear()
+
+    nome_cdb.send_keys("15")
+    indexador_input = driver.find_element(By.ID, "input_formAlt:valor_quantidade"+ str(id_editar))
+    indexador_input.clear()
+    indexador_input.send_keys("200")
+
+
+    investir_button = driver.find_element(By.ID, "formAlt:editar_variavel"+ str(id_editar))
+    investir_button.click()
+    driver.implicitly_wait(10)
+    #assert driver.current_url == "http://localhost:8080/InvestiDor/faces/indexRendaFixa.xhtml"
+    #logging.info("Renda criado bem-sucedido")

@@ -50,6 +50,12 @@ if ids_elementos != ids_elementos_depois:
                 
 
 
+
+
+                
+
+
+
                 logging.info("Deletar elemento criado")
                 driver.get("http://localhost:8080/InvestiDor/faces/indexRendaFixa.xhtml")
 
