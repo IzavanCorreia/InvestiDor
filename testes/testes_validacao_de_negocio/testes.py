@@ -174,6 +174,19 @@ def pegarIdsCards(driver):
     print(ids)
     return ids
 
+def pegarIdsCardsRendaVariavel(driver):
+    driver.get("http://localhost:8080/InvestiDor/faces/indexRendaVariavel.xhtml")
+
+    elements = driver.find_elements(by="css selector", value=".ids")
+    ids = []
+    
+    # Iterar sobre os elementos encontrados
+    for element in elements:
+        # Fazer algo com cada elemento, por exemplo, imprimir seu texto
+        ids.append(element.text)
+    print(ids)
+    return ids
+
 def diferencaSimetrica(lista1, lista2):
     set1 = set(lista1)
     set2 = set(lista2)

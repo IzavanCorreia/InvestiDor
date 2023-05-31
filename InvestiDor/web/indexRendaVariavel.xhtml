@@ -103,6 +103,8 @@
                             <p:card styleClass="card">
                                 <f:facet name="header">
                                     <h3 class="card-header">#{item.ticket.nome}</h3>
+                                                                        <h3 class="card-header ids">#{item.id}</h3>
+
                                 </f:facet>
                                 <f:facet name="header">
                                     <h3>R$ #{item.valorAtualTotalFormatado}</h3>
@@ -120,7 +122,7 @@
                                     </p:commandButton>
                                     <p:commandButton icon="glyphicon glyphicon-remove"
                                                      oncomplete="$('.modalDeletar').modal('show')" update=":modalDeletar"
-                                                     ajax="true">
+                                                     ajax="true"  id="deletaraqui#{item.id}">
                                         <f:setPropertyActionListener value="#{item}" target="#{variavelController.rendavariavelsel}" />
                                     </p:commandButton>
                                 </div>
@@ -192,7 +194,7 @@
                  title="Tem certeza que deseja apagar o investimento #{variavelController.rendavariavelsel.ticket.nome}?">
             <b:form id="formDel">
                 <b:commandButton value="Sim" action="#{variavelController.deletar()}" 
-                                 oncomplete="$('.formDel').modal('hide')"/>
+                                 oncomplete="$('.formDel').modal('hide')" id="certezaaqui"/>
             </b:form>
         </b:modal>
 
