@@ -13,9 +13,10 @@
         <b:growl delay="4000" showDetail="true" showSummary="true"/>
 
         <b:form id="formTicket">
-            <p:commandButton style="margin-bottom: 5px"  value="Cadastrar"
+            <p:commandButton style="margin-bottom: 5px"  value="Cadastrar"  id="cadastrar_ticket_tESTE"
                              oncomplete=" $('.modalCad').modal('show')" ajax="true"
-                             update=":modalCadastro" action="#{ticketController.clearSelection()}"/>
+                             update=":modalCadastro" action="#{ticketController.clearSelection()}"
+                             />
 
             <b:dataTable var="item" value="#{ticketController.readAllTicket()}">
 
@@ -52,7 +53,7 @@
         </b:form>
 
         <b:modal id="modalCadastro" style-class="modalCad"
-                 title="#{(ticketController.selTicket eq null)?'Cadastro de':'Altere os dados do'} Ticket">
+                 title="#{(ticketController.selTicket eq null)?'Cadastro de':'Altere os dados do'} Ticket" >
 
             <b:form>
                 <b:panelGrid columns="2">
@@ -60,12 +61,12 @@
                     <c:choose>
                         <c:when test="#{ticketController.selTicket eq null}">
                             <h:outputText value="Nome do ticket"/>
-                            <b:inputText value="#{ticketController.ticket.nome}"/>
+                            <b:inputText value="#{ticketController.ticket.nome}" id="nome_ticket"/>
                             <h:outputText value="Nome da empresa"/>
-                            <b:inputText value="#{ticketController.ticket.nomeEmpresa}"/>
+                            <b:inputText value="#{ticketController.ticket.nomeEmpresa}" id="nome_empresa"/>
 
                             <h:outputText value="Valor atual"/>
-                            <b:inputText value="#{ticketController.ticket.valorAtual}"/>
+                            <b:inputText value="#{ticketController.ticket.valorAtual}" id="ticket_valor_atual"/>
 
                             <h:outputText value="Tipo do ticket"/>
                             <h:selectOneMenu value="#{ticketController.ticket.tipoTicket}">
@@ -74,7 +75,7 @@
                                 <f:selectItem itemValue="bdr" itemLabel="BDR" />
                             </h:selectOneMenu>
 
-                            <b:commandButton value="Cadastrar" 
+                            <b:commandButton value="Cadastrar1" 
                                              action="#{ticketController.inserir()}"
                                              />
                         </c:when>

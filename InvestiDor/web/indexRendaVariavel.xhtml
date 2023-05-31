@@ -15,7 +15,7 @@
         <ui:include src="MenuUsuario.xhtml"/>
 
         <b:form id="formIndexRendaVariavel" >
-            <b:button icon="glyphicon glyphicon-plus" style-class="btn btn-primary my-button" onclick="$('#modalCriaInvestimento').modal('show')"></b:button>
+            <b:button id="criarrendavariavel" icon="glyphicon glyphicon-plus" style-class="btn btn-primary my-button" onclick="$('#modalCriaInvestimento').modal('show')"></b:button>
         </b:form>
 
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -76,18 +76,18 @@
                             </b:selectOneMenu>   
 
                             <h:outputText value="Valor de compra:"/>
-                            <b:inputText value="#{variavelController.rendavariavel.valorCompra}"/>
+                            <b:inputText value="#{variavelController.rendavariavel.valorCompra}" id="valorCompra"/>
                             <h:outputText value="Quantidade:"/>
-                            <b:inputText value="#{variavelController.rendavariavel.quantidade}"/>  
+                            <b:inputText value="#{variavelController.rendavariavel.quantidade}" id="quantidade_compra"/>  
                             <h:outputText value="Data da compra:"/>
-                            <p:calendar value="#{variavelController.rendavariavel.dataCompra}" 
+                            <p:calendar value="#{variavelController.rendavariavel.dataCompra}" id="data_compra" 
                                         showOn="button" 
                                         navigator="true" 
                                         required="true" 
                                         requiredMessage="Por favor, selecione a data da compra." />
                         </b:panelGrid>
                     </div>
-                    <b:commandButton value="Inserir o investimento" action="#{variavelController.cadastrar()}"/>
+                    <b:commandButton value="Inserir o investimento" action="#{variavelController.cadastrar()}" id="inserir_criacao"/>
 
                 </b:formGroup>
             </b:form>

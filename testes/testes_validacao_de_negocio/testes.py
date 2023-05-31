@@ -20,6 +20,7 @@ def login(email,password,driver):
         return 0
     
 def registrar(cpf,nome,sobrenome,telefone,email,password,driver):
+    try:
         driver.get("http://localhost:8080/InvestiDor/faces/index.xhtml")
         driver.implicitly_wait(10)
 
@@ -55,6 +56,8 @@ def registrar(cpf,nome,sobrenome,telefone,email,password,driver):
         login_button.click()
         driver.implicitly_wait(10)
         return 1
+    except:
+        return 0
  
 def lougout(driver):
     try:
