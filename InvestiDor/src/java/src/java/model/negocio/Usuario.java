@@ -53,7 +53,7 @@ public class Usuario {
 
     @NotNull(message = "O e-mail não pode ser nulo")
     @NotEmpty(message = "O e-mail não pode estar vazio")
-    @Email(message = "Formato de e-mail inválido")
+    @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$", message = "E-mail inválido")
     private String email;
 
     @NotNull(message = "A senha não pode ser nula")
