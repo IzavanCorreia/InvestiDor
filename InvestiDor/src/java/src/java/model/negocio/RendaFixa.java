@@ -5,6 +5,7 @@
  */
 package src.java.model.negocio;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.persistence.Entity;
@@ -21,6 +22,7 @@ import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.validation.constraints.DecimalMin;
+import src.java.model.validacao.PontoDecimal;
 
 /**
  *
@@ -33,41 +35,45 @@ public class RendaFixa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotNull
+    @NotNull(message = "O campo nome não pode ser nulo")
     @Size(min = 1, max = 100)
     private String nome;
 
+    @NotNull(message = "O campo nome não pode ser nulo")
     @Size(min = 1, max = 100)
     private String indexador;
 
-    @NotNull
+    @PontoDecimal
+    @NotNull(message = "O campo nome não pode ser nulo")
     @DecimalMin("0.01")
     @DecimalMax("99999.99")
     private double quantidade;
 
-    @NotNull
+    @PontoDecimal
+    @NotNull(message = "O campo nome não pode ser nulo")
     @DecimalMin("0.01")
     @DecimalMax("9999999999.99")
     private double valorUnitarioCompra;
 
     private double valorTotalCompra;
 
-    @NotNull
+    @PontoDecimal
+    @NotNull(message = "O campo nome não pode ser nulo")
     @DecimalMin("0.01")
     @DecimalMax("9999999999.99")
     private double valorUnitarioAtual;
 
     private double valorTotalAtual;
 
-    @NotNull
+    @NotNull(message = "O campo nome não pode ser nulo")
     @Temporal(TemporalType.DATE)
     private Date dataInicial;
 
-    @NotNull
+    @NotNull(message = "O campo nome não pode ser nulo")
     @Temporal(TemporalType.DATE)
     private Date dataFinal;
 
-    @NotNull
+    @NotNull(message = "O campo nome não pode ser nulo")
     @Size(min = 1, max = 100)
     private String tipo;
 
@@ -75,6 +81,9 @@ public class RendaFixa {
 
     private String dataInicialString;
     private String dataFinalString;
+
+    private String valorCompraTotalFormatado;
+    private String valorAtualTotalFormatado;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id")
@@ -134,6 +143,7 @@ public class RendaFixa {
 
     public void setValorTotalCompra() {
         this.valorTotalCompra = getValorUnitarioCompra() * quantidade;
+        setValorCompraTotalFormatado(valorTotalCompra);
     }
 
     public double getValorTotalAtual() {
@@ -142,6 +152,7 @@ public class RendaFixa {
 
     public void setValorTotalAtual() {
         this.valorTotalAtual = getValorUnitarioAtual() * quantidade;
+        setValorAtualTotalFormatado(valorTotalAtual);
     }
 
     public Usuario getUsuario() {
@@ -211,4 +222,21 @@ public class RendaFixa {
         return dataFinal.after(dataInicial);
     }
 
+    public String getValorCompraTotalFormatado() {
+        return valorCompraTotalFormatado;
+    }
+
+    public void setValorCompraTotalFormatado(double valorTotalCompra) {
+        DecimalFormat df = new DecimalFormat("#.00"); // Define o padrão de formatação com duas casas decimais
+        this.valorCompraTotalFormatado = df.format(valorTotalCompra); // Formata o número original
+    }
+
+    public String getValorAtualTotalFormatado() {
+        return valorAtualTotalFormatado;
+    }
+
+    public void setValorAtualTotalFormatado(double valorTotalAtual) {
+        DecimalFormat df = new DecimalFormat("#.00"); // Define o padrão de formatação com duas casas decimais
+        this.valorAtualTotalFormatado = df.format(valorTotalAtual);
+    }
 }

@@ -1,0 +1,139 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>MENU DE TICKET</title>
+    </h:head>
+    <h:body>
+        <b:growl delay="4000" showDetail="true" showSummary="true"/>
+
+        <b:form id="formTicket">
+            <p:commandButton style="margin-bottom: 5px"  value="Cadastrar"  id="cadastrar_ticket_tESTE"
+                             oncomplete=" $('.modalCad').modal('show')" ajax="true"
+                             update=":modalCadastro" action="#{ticketController.clearSelection()}"
+                             />
+
+            <b:dataTable var="item" value="#{ticketController.readAllTicket()}">
+
+                <b:dataTableColumn value="#{item.id}" label="ID"/>
+                <b:dataTableColumn value="#{item.nome}" label="Nome do Ticket"/>
+                <b:dataTableColumn value="#{item.nomeEmpresa}" label="Nome da empresa"/>
+                <b:dataTableColumn value="#{item.valorAtual}" label="Valor Atual"/>
+                <b:dataTableColumn value="#{item.tipoTicket}" label="Tipo do ticket"/>
+                <b:dataTableColumn label="Operações">
+                    <b:panelGrid columns="3" style="width: 100px">
+                        <p:commandButton icon="glyphicon glyphicon-search" oncomplete=" $('.modalVisual').modal('show')"
+                                         update="@(.modalVisual)" ajax="true" >
+                            <f:setPropertyActionListener value="#{item}" target="#{ticketController.selTicket}"/>
+                        </p:commandButton>
+
+                        <p:commandButton icon="glyphicon glyphicon-pencil" oncomplete="$('.modalCad').modal('show')"
+                                         update=":modalCadastro" ajax="true">
+                            <f:setPropertyActionListener value="#{item}" target="#{ticketController.selTicket}"/>
+                        </p:commandButton>
+                        <p:commandButton icon="glyphicon glyphicon-remove" action="#{ticketController.deletar()}" 
+                                         update="formTicket">
+                            <f:setPropertyActionListener value="#{item}" target="#{ticketController.selTicket}"/>
+                            <p:confirm message="Tem certeza que deseja deletar o ticket?"/>
+                        </p:commandButton>
+                    </b:panelGrid>
+                </b:dataTableColumn>
+            </b:dataTable>
+
+            <p:confirmDialog global="true">
+                <p:commandButton value="sim" type="button" styleClass="ui-confirmdialog-yes"/>
+                <p:commandButton value="não" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+            </p:confirmDialog>
+
+        </b:form>
+
+        <b:modal id="modalCadastro" style-class="modalCad"
+                 title="#{(ticketController.selTicket eq null)?'Cadastro de':'Altere os dados do'} Ticket" >
+
+            <b:form>
+                <b:panelGrid columns="2">
+
+                    <c:choose>
+                        <c:when test="#{ticketController.selTicket eq null}">
+                            <h:outputText value="Nome do ticket"/>
+                            <b:inputText value="#{ticketController.ticket.nome}" id="nome_ticket"/>
+                            <h:outputText value="Nome da empresa"/>
+                            <b:inputText value="#{ticketController.ticket.nomeEmpresa}" id="nome_empresa"/>
+
+                            <h:outputText value="Valor atual"/>
+                            <b:inputText value="#{ticketController.ticket.valorAtual}" id="ticket_valor_atual"/>
+
+                            <h:outputText value="Tipo do ticket"/>
+                            <h:selectOneMenu value="#{ticketController.ticket.tipoTicket}">
+                                <f:selectItem itemValue="ação" itemLabel="Ação" />
+                                <f:selectItem itemValue="fundo imobiliário" itemLabel="Fundo Imobiliário" />
+                                <f:selectItem itemValue="bdr" itemLabel="BDR" />
+                            </h:selectOneMenu>
+
+                            <b:commandButton value="Cadastrar1" 
+                                             action="#{ticketController.inserir()}"
+                                             />
+                        </c:when>
+                        <c:otherwise>
+                            <h:outputText value="Nome do ticket"/>
+                            <b:inputText value="#{ticketController.selTicket.nome}"/>
+                            <h:outputText value="Nome da empresa"/>
+                            <b:inputText value="#{ticketController.selTicket.nomeEmpresa}"/>
+
+                            <h:outputText value="Valor atual"/>
+                            <b:inputText value="#{ticketController.selTicket.valorAtual}"/>
+
+                            <h:outputText value="Tipo do ticket"/>
+                            <h:selectOneMenu value="#{ticketController.selTicket.tipoTicket}">
+                                <f:selectItem itemValue="ação" itemLabel="Ação" />
+                                <f:selectItem itemValue="fundo imobiliário" itemLabel="Fundo Imobiliário" />
+                                <f:selectItem itemValue="bdr" itemLabel="BDR" />
+                            </h:selectOneMenu>
+
+                            <b:commandButton value="Alterar" 
+                                             action="#{ticketController.alterar()}"
+                                             />
+                        </c:otherwise>
+                    </c:choose>
+
+                </b:panelGrid>
+
+
+
+                <b:button value="cancelar" dismiss="modal"/>
+
+            </b:form>
+
+        </b:modal>
+
+        <b:modal id="modalVisualiza" style-class="modalVisual" title="Dados do ticket">
+            <b:form>
+                <b:panelGrid columns="2">
+
+                    <h:outputText value="ID"/>
+                    <h:outputText  value="#{ticketController.selTicket.id}"/>
+
+                    <h:outputText value="Nome do ticket"/>
+                    <h:outputText  value="#{ticketController.selTicket.nome}"/>
+
+                    <h:outputText value="Nome da empresa"/>
+                    <h:outputText  value="#{ticketController.selTicket.nomeEmpresa}"/>
+
+                    <h:outputText value="Valor atual"/>
+                    <h:outputText  value="#{ticketController.selTicket.valorAtual}"/>
+
+                    <h:outputText value="Tipo do ticket"/>
+                    <h:outputText  value="#{ticketController.selTicket.tipoTicket}"/>
+
+                </b:panelGrid>
+                <b:button value="fechar" dismiss="modal"/>
+            </b:form>
+        </b:modal>
+    </h:body>
+</html>
+

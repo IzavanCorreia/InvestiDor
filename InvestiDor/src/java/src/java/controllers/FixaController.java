@@ -72,7 +72,7 @@ public class FixaController {
     public void deletar() {
         if (rendafixasel == null) {
             FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Nenhum item selecionado para deletar!", null));
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Nenhum investimento selecionado para deletar!", null));
             return;
         }
 

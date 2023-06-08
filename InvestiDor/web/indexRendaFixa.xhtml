@@ -7,21 +7,23 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:c="http://java.sun.com/jsp/jstl/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    
     <h:head>
-        <title>Tela inicial</title>
+        <link rel="stylesheet" href="stylesheet/rendafixa.css"> </link>
+        <title>Tela de Renda Fixa</title>
     </h:head>
     <h:body>
 
         <ui:include src="MenuUsuario.xhtml"/>
 
         <b:form id="formIndexRendaFixa" >
-            <b:button icon="glyphicon glyphicon-plus" style-class="btn btn-primary" onclick="$('#modalCriaInvestimento').modal('show')"></b:button>
+            <b:button id="criarRendaFixa" icon="glyphicon glyphicon-plus" style-class="btn btn-primary my-button" onclick="$('#modalCriaInvestimento').modal('show')"></b:button>
         </b:form>
 
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
         <script>
-            let lista = [];
-            lista.push(['Nome', 'Valor']);
+                let lista = [];
+                lista.push(['Nome', 'Valor']);
 
         </script>
 
@@ -60,77 +62,90 @@
                 <b:formGroup>
                     <b:panelGrid columns="2">
                         <h:outputText value="Nome:"/>
-                        <b:inputText value="#{fixaController.rendafixa.nome}"/>
+                        <b:inputText value="#{fixaController.rendafixa.nome}" id="nome_rendafixa"/>
                         <h:outputText value="Indexador:"/>
-                        <b:inputText value="#{fixaController.rendafixa.indexador}"/>
+                        <b:inputText value="#{fixaController.rendafixa.indexador}" id="indexador"/>
                         <h:outputText value="Quantidade:"/>
-                        <b:inputText value="#{fixaController.rendafixa.quantidade}"/>
+                        <b:inputText value="#{fixaController.rendafixa.quantidade}" id="quantidade" />
                         <h:outputText value="Valor unitário de compra:"/>
-                        <b:inputText value="#{fixaController.rendafixa.valorUnitarioCompra}"/>
+                        <b:inputText value="#{fixaController.rendafixa.valorUnitarioCompra}" id="valor_unit"/>
                         <h:outputText value="Valor unitário atual:"/>
-                        <b:inputText value="#{fixaController.rendafixa.valorUnitarioAtual}"/>
-                        <h:outputText value="Data inicial:"/>
-                        <p:calendar value="#{fixaController.rendafixa.dataInicial}" 
+                        <b:inputText value="#{fixaController.rendafixa.valorUnitarioAtual}" id="valor_atual"/>
+                        <h:outputText value="Data inicial:" />
+                        <p:calendar value="#{fixaController.rendafixa.dataInicial}" id="data_inicial"
                                     showOn="button" 
                                     navigator="true" 
                                     required="true" 
                                     requiredMessage="Por favor, selecione a data de início." />
                         <h:outputText value="Data final:"/>
-                        <p:calendar value="#{fixaController.rendafixa.dataFinal}" 
+                        <p:calendar value="#{fixaController.rendafixa.dataFinal}"  id="data_final"
                                     showOn="button" 
                                     navigator="true" 
                                     required="true" 
                                     requiredMessage="Por favor, selecione a data de fim." />
-                        <h:outputText value="Tipo:"/>
-                        <b:inputText value="#{fixaController.rendafixa.tipo}"/>
-                        <h:outputText value="Imposto:"/>
-                        <p:selectBooleanCheckbox value="#{fixaController.rendafixa.imposto}" itemLabel="sim" />
+                        <h:outputText value="Tipo:"  />
+                        <b:inputText value="#{fixaController.rendafixa.tipo}" id="tipo_investimento" />
+                        <h:outputText value="Imposto:"  />
+                        <p:selectBooleanCheckbox value="#{fixaController.rendafixa.imposto}" itemLabel="sim" id="imposto" />
                     </b:panelGrid>
-                    <b:commandButton value="Inserir o investimento" action="#{fixaController.cadastrar()}"/>
+                    <b:commandButton value="Inserir o investimento" action="#{fixaController.cadastrar()}" id="cadastrar_investimento" />
 
                 </b:formGroup>
             </b:form>
         </b:modal>
+        <style>
+
+            </style>
 
         <b:form id="formCards">
-            <div style="display: flex">
+            <div class="button-container">
+                <div class="cards-container">
+                    <c:forEach items="#{usuarioController.lerTodasRendasFixasPorUsuario(loginController.usuarioLogado.id)}"
+                               var="item" varStatus="i">
 
-                <c:forEach items="#{usuarioController.lerTodasRendasFixasPorUsuario(loginController.usuarioLogado.id)}"
-                           var="item" varStatus="i">
+                        <c:if test="#{i.index le 100}">
+                            <p:card styleClass="card">
+                                <f:facet name="header">
+                                    <h3 class="card-header">#{item.nome}</h3>
+                                    
+                                  
+                                                    ID: <h:outputText class="ids" value="#{item.id}"/>
 
-                    <c:if  test="#{i.index le 100}">
 
-                        <p:card style="width: 25rem; margin-bottom: 2em; margin-left: 2em">
-                            <f:facet name="header"><h3>#{item.nome}</h3></f:facet>
-                            <f:facet name="header"><h3>R$ #{item.valorTotalAtual}</h3></f:facet>
-                            <p:commandButton icon="glyphicon glyphicon-search"
-                                             oncomplete="$('.modalVisualizarInvestimento').modal('show')"
-                                             ajax='true' update=":modalVisualizarInvestimento">
-                                <f:setPropertyActionListener value="#{item}" 
-                                                             target="#{fixaController.rendafixasel}"/>
-                            </p:commandButton>
-                            <p:commandButton icon="glyphicon glyphicon-pencil" oncomplete="$('.modalAtualizar').modal('show')"
-                                             update=":modalAtualizar" ajax="true">
-                                <f:setPropertyActionListener value="#{item}" target="#{fixaController.rendafixasel}"/>
-                            </p:commandButton>   
-                            <p:commandButton icon="glyphicon glyphicon-remove"  oncomplete="$('.modalDeletar').modal('show')"
-                                             update=":modalDeletar" ajax="true">
-                                <f:setPropertyActionListener value="#{item}" target="#{fixaController.rendafixasel}"/>
-                            </p:commandButton>
-                        </p:card>
-
-                    </c:if>
-                </c:forEach>
-
+                                </f:facet>
+                                <f:facet name="header">
+                                    <h3>R$ #{item.valorAtualTotalFormatado}</h3>
+                                </f:facet>
+                                <div class="card-buttons">
+                                    <p:commandButton icon="glyphicon glyphicon-search"
+                                                     oncomplete="$('.modalVisualizarInvestimento').modal('show')"
+                                                     ajax="true" update=":modalVisualizarInvestimento">
+                                        <f:setPropertyActionListener value="#{item}" target="#{fixaController.rendafixasel}" />
+                                    </p:commandButton>
+                                    <p:commandButton icon="glyphicon glyphicon-pencil"
+                                                     oncomplete="$('.modalAtualizar').modal('show')" update=":modalAtualizar"
+                                                     ajax="true" id="editar#{item.id}">
+                                        <f:setPropertyActionListener value="#{item}" target="#{fixaController.rendafixasel}" />
+                                    </p:commandButton>
+                                    <p:commandButton icon="glyphicon glyphicon-remove"
+                                                     oncomplete="$('.modalDeletar').modal('show')" update=":modalDeletar"
+                                                     ajax="true" id="deletar#{item.id}" >
+                                        <f:setPropertyActionListener value="#{item}" target="#{fixaController.rendafixasel}"  />
+                                    </p:commandButton>
+                                </div>
+                            </p:card>
+                        </c:if>
+                    </c:forEach>
+                </div>
             </div>
         </b:form>
-
 
         <b:modal id="modalVisualizarInvestimento" class="modalVisualizarInvestimento fade" 
                  title="#{fixaController.rendafixasel.nome}">
 
             <h4>Informações do Investimento</h4>
             <b:panelGrid columns="2">
+                     
                 <h:outputText value="Indexador:"/>
                 <h:outputText value="#{fixaController.rendafixasel.indexador}"/>
                 <h:outputText value="Quantidade:"/>
@@ -139,10 +154,10 @@
                 <h:outputText value="#{fixaController.rendafixasel.valorUnitarioCompra}"/>
                 <h:outputText value="Valor unitário atual:"/>
                 <h:outputText value="#{fixaController.rendafixasel.valorUnitarioAtual}"/>
-                 <h:outputText value="Valor total de compra:"/>
-                <h:outputText value="#{fixaController.rendafixasel.valorTotalCompra}"/>
+                <h:outputText value="Valor total de compra:"/>
+                <h:outputText value="#{fixaController.rendafixasel.valorCompraTotalFormatado}"/>
                 <h:outputText value="Valor total atual:"/>
-                <h:outputText value="#{fixaController.rendafixasel.valorTotalAtual}"/>
+                <h:outputText value="#{fixaController.rendafixasel.valorAtualTotalFormatado}"/>
                 <h:outputText value="Data inicial:"/>
                 <h:outputText value="#{fixaController.rendafixasel.dataInicialString}"/>
                 <h:outputText value="Data final:"/>
@@ -166,35 +181,35 @@
             <b:form id="formAlt">
                 <b:panelGrid columns="2">
                     <h:outputText value="Nome:"/>
-                    <b:inputText value="#{fixaController.rendafixasel.nome}"/>
+                    <b:inputText value="#{fixaController.rendafixasel.nome}" id="nomeEditar#{fixaController.rendafixasel.id}" />
                     <h:outputText value="Indexador:"/>
-                    <b:inputText value="#{fixaController.rendafixasel.indexador}"/>
+                    <b:inputText value="#{fixaController.rendafixasel.indexador}" id="indexadorEditar#{fixaController.rendafixasel.id}"/>
                     <h:outputText value="Quantidade:"/>
-                    <b:inputText value="#{fixaController.rendafixasel.quantidade}"/>
+                    <b:inputText value="#{fixaController.rendafixasel.quantidade}" id="quantidadeEditar#{fixaController.rendafixasel.id}" />
                     <h:outputText value="Valor unitário de compra:"/>
-                    <b:inputText value="#{fixaController.rendafixasel.valorUnitarioCompra}"/>
+                    <b:inputText value="#{fixaController.rendafixasel.valorUnitarioCompra}" id="valor_unitEditar#{fixaController.rendafixasel.id}" />
                     <h:outputText value="Valor unitário atual:"/>
-                    <b:inputText value="#{fixaController.rendafixasel.valorUnitarioAtual}"/>
+                    <b:inputText value="#{fixaController.rendafixasel.valorUnitarioAtual}" id="valor_atualEditar#{fixaController.rendafixasel.id}" />
                     <h:outputText value="Data inicial:"/>
                     <p:calendar value="#{fixaController.rendafixasel.dataInicial}" 
                                 showOn="button" 
                                 navigator="true" 
                                 required="true" 
-                                requiredMessage="Por favor, selecione a data de início." />
+                                requiredMessage="Por favor, selecione a data de início." id="data_inicialEditar#{fixaController.rendafixasel.id}" />
                     <h:outputText value="Data final:"/>
                     <p:calendar value="#{fixaController.rendafixasel.dataFinal}" 
                                 showOn="button" 
                                 navigator="true" 
                                 required="true" 
-                                requiredMessage="Por favor, selecione a data de fim." />
+                                requiredMessage="Por favor, selecione a data de fim."  id="data_finalEditar#{fixaController.rendafixasel.id}"/>
                     <h:outputText value="Tipo:"/>
-                    <b:inputText value="#{fixaController.rendafixasel.tipo}"/>
+                    <b:inputText value="#{fixaController.rendafixasel.tipo}" id="tipo_investimentoEditar#{fixaController.rendafixasel.id}" />
                     <h:outputText value="Imposto:"/>
-                    <p:selectBooleanCheckbox value="#{fixaController.rendafixasel.imposto}" itemLabel="sim" />
+                    <p:selectBooleanCheckbox value="#{fixaController.rendafixasel.imposto}" itemLabel="sim" id="impostoEditar#{fixaController.rendafixasel.id}" />
                 </b:panelGrid>
 
                 <b:commandButton value="Alterar" action="#{fixaController.alterar()}" 
-                                 oncomplete="$('.formAlt').modal('hide')"/>
+                                 oncomplete="$('.formAlt').modal('hide')" id="botarEditar#{fixaController.rendafixasel.id}" />
             </b:form>
 
 
@@ -204,7 +219,7 @@
                  title="Tem certeza que deseja apagar o investimento #{fixaController.rendafixasel.nome}?">
             <b:form id="formDel">
                 <b:commandButton value="Sim" action="#{fixaController.deletar()}" 
-                                 oncomplete="$('.formDel').modal('hide')"/>
+                                 oncomplete="$('.formDel').modal('hide')" id="certeza#{fixaController.rendafixasel.id}"/>
             </b:form>
         </b:modal>
 

@@ -5,8 +5,12 @@
  */
 package src.java.controllers;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -35,6 +39,9 @@ public class UsuarioController {
     @Valid
     private Usuario selusuario;
     private Validator validator;
+    private static final String PASSWORD_REGEX = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$&@#])[0-9a-zA-Z$&@#]{8,}$";
+    private static final String ERROR_MESSAGE = "A senha deve conter pelo menos um dígito, uma letra minúscula, uma letra maiúscula, "
+            + "um dos caracteres especiais ($, *, &, @, #) e ter no mínimo 8 caracteres.";
 
     @PostConstruct
     public void init() {
@@ -45,8 +52,13 @@ public class UsuarioController {
     }
 
     public void inserir(String confirma) {
+        
 
-        if (!confirma.equals(this.usuario.getSenha())) {
+        String confirmaNova = sha512(confirma);
+        String senhaQueVaiProBanco = sha512(this.usuario.getSenha());
+        this.usuario.setSenha(senhaQueVaiProBanco);
+
+        if (!confirmaNova.equals(this.usuario.getSenha())) {
 
             FacesContext.getCurrentInstance()
                     .addMessage(null,
@@ -57,11 +69,31 @@ public class UsuarioController {
 
         }
 
-        if (verificarExistenciaUsuario(usuario.getEmail())) {
+        if (verificarExistenciaUsuarioEmail(usuario.getEmail())) {
             FacesContext.getCurrentInstance()
                     .addMessage(null,
                             new FacesMessage(FacesMessage.SEVERITY_ERROR,
                                     "Erro!", "o e-mail informado não está disponível"));
+
+            return;
+        }
+        
+        System.out.println(validatePassword(confirma));
+        
+          if (!validatePassword(confirma)) {
+            FacesContext.getCurrentInstance()
+                    .addMessage(null,
+                            new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                                    "Erro!", ERROR_MESSAGE));
+
+            return;
+        }
+
+        if (verificarExistenciaUsuarioCpf(usuario.getCpf())) {
+            FacesContext.getCurrentInstance()
+                    .addMessage(null,
+                            new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                                    "Erro!", "o cpf informado não está disponível"));
 
             return;
         }
@@ -90,9 +122,16 @@ public class UsuarioController {
 
     }
 
-    public boolean verificarExistenciaUsuario(String email) {
+    public boolean verificarExistenciaUsuarioEmail(String email) {
         String query = "SELECT u FROM Usuario u WHERE u.email = :email";
         List<Usuario> usuarios = ManagerDao.getCurrentInstance().read(query, Usuario.class, "email", email);
+
+        return !usuarios.isEmpty();
+    }
+
+    public boolean verificarExistenciaUsuarioCpf(String cpf) {
+        String query = "SELECT u FROM Usuario u WHERE u.cpf = :cpf";
+        List<Usuario> usuarios = ManagerDao.getCurrentInstance().read(query, Usuario.class, "cpf", cpf);
 
         return !usuarios.isEmpty();
     }
@@ -206,7 +245,7 @@ public class UsuarioController {
 
         List<RendaVariavel> rendasVariaveis = lerTodasRendasVariaveisPorUsuario(id);
         for (RendaVariavel rv : rendasVariaveis) {
-            valorTotalVariavel += rv.getValorCompra();
+            valorTotalVariavel += rv.getValorAtualTotal();
         }
 
         return valorTotalVariavel;
@@ -218,10 +257,33 @@ public class UsuarioController {
 
         List<RendaVariavel> rendasVariaveis = lerTodasRendasVariaveisPorUsuario(id);
         for (RendaVariavel rv : rendasVariaveis) {
-            valorTotalVariavelCompra += rv.getValorCompra();
+            valorTotalVariavelCompra += rv.getValorCompraTotal();
         }
 
         return valorTotalVariavelCompra;
+    }
+
+    public static String sha512(String input) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-512");
+            byte[] encodedHash = digest.digest(input.getBytes(StandardCharsets.UTF_8));
+
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : encodedHash) {
+                String hex = String.format("%02x", b);
+                hexString.append(hex);
+            }
+
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            // Tratar exceção caso o algoritmo SHA-512 não esteja disponível
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    public static boolean validatePassword(String password) {
+        return Pattern.matches(PASSWORD_REGEX, password);
     }
 
 }

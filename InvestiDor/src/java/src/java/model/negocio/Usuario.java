@@ -18,6 +18,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import src.java.model.validacao.CPF;
 
 /**
  *
@@ -32,7 +33,7 @@ public class Usuario {
 
     @NotNull(message = "O CPF não pode ser nulo")
     @NotEmpty(message = "O campo não pode estar vazio")
-    @Pattern(regexp = "\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}", message = "CPF inválido")
+    @CPF
     private String cpf;
 
     @NotNull(message = "O nome não pode ser nulo")
@@ -52,7 +53,7 @@ public class Usuario {
 
     @NotNull(message = "O e-mail não pode ser nulo")
     @NotEmpty(message = "O e-mail não pode estar vazio")
-    @Email(message = "Formato de e-mail inválido")
+    @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$", message = "E-mail inválido")
     private String email;
 
     @NotNull(message = "A senha não pode ser nula")

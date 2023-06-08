@@ -2,7 +2,7 @@ import logging
 from selenium import webdriver
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
-
+from keys import pegarloginesenha
 # Configurar o logger
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -71,10 +71,10 @@ try:
 
     logging.info("Teste 2: Ir tela de renda fixa")
 
-    logout_button = driver.find_element(By.ID, "formMenuUsuario:j_idt13")
+    logout_button = driver.find_element(By.ID, "formMenuUsuario:menu")
     logout_button.click()
 
-    logout_button = driver.find_element(By.ID, "formMenuUsuario:j_idt15")
+    logout_button = driver.find_element(By.ID, "formMenuUsuario:rendafixa")
     logout_button.click()
 
     driver.implicitly_wait(10)
@@ -86,7 +86,7 @@ try:
 
     logging.info("Teste 3: Criar renda fixa")
 
-    logout_button = driver.find_element(By.ID, "formIndexRendaFixa:j_idt20")
+    logout_button = driver.find_element(By.ID, "formIndexRendaFixa:rendafixa")
     logout_button.click()
 
     nome_do_cdb = "CDB BANCO SEGURO 107% CDI"
