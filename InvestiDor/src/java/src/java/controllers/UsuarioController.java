@@ -53,7 +53,6 @@ public class UsuarioController {
 
     public void inserir(String confirma) {
         
-
         String confirmaNova = sha512(confirma);
         String senhaQueVaiProBanco = sha512(this.usuario.getSenha());
         this.usuario.setSenha(senhaQueVaiProBanco);
@@ -136,13 +135,6 @@ public class UsuarioController {
         return !usuarios.isEmpty();
     }
 
-    public void deletar() {
-        ManagerDao.getCurrentInstance().delete(this.selusuario);
-
-        FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage("usuario deletado com sucesso!"));
-    }
-
     public void clearSelection() {
         this.selusuario = null;
 
@@ -158,38 +150,6 @@ public class UsuarioController {
 
     public Usuario getSelUsuario() {
         return selusuario;
-    }
-
-    public void alterar(String senha) {
-
-        if (!this.selusuario.getSenha().equals(senha)) {
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                            "Erro!", "A senha não confere"));
-
-            return;
-        }
-
-        List<String> mensagens = new ArrayList<>();
-        if (!validator.validate(this.selusuario).isEmpty()) {
-            for (ConstraintViolation<Usuario> violation : validator.validate(this.selusuario)) {
-                mensagens.add(violation.getMessage());
-            }
-
-        }
-        if (!mensagens.isEmpty()) {
-            FacesContext.getCurrentInstance()
-                    .addMessage(null,
-                            new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                                    "Erro!", String.join("<br>", mensagens)));
-            return;
-        }
-
-        ManagerDao.getCurrentInstance().update(this.selusuario);
-
-        FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage("Usuario alterado com sucesso!"));
-
     }
 
     public void setSelUsuario(Usuario selusuario) {

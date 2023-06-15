@@ -7,7 +7,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:c="http://java.sun.com/jsp/jstl/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-    
+
     <h:head>
         <link rel="stylesheet" href="stylesheet/rendafixa.css"> </link>
         <title>Tela de Renda Fixa</title>
@@ -95,7 +95,7 @@
         </b:modal>
         <style>
 
-            </style>
+        </style>
 
         <b:form id="formCards">
             <div class="button-container">
@@ -107,9 +107,9 @@
                             <p:card styleClass="card">
                                 <f:facet name="header">
                                     <h3 class="card-header">#{item.nome}</h3>
-                                    
-                                  
-                                                    ID: <h:outputText class="ids" value="#{item.id}"/>
+
+
+                                    ID: <h:outputText class="ids" value="#{item.id}"/>
 
 
                                 </f:facet>
@@ -145,7 +145,7 @@
 
             <h4>Informações do Investimento</h4>
             <b:panelGrid columns="2">
-                     
+
                 <h:outputText value="Indexador:"/>
                 <h:outputText value="#{fixaController.rendafixasel.indexador}"/>
                 <h:outputText value="Quantidade:"/>

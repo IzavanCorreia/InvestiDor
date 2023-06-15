@@ -8,14 +8,22 @@ package src.java.controllers;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.context.Flash;
+import javax.validation.ConstraintViolation;
 import src.java.model.dao.ManagerDao;
 import src.java.model.negocio.Usuario;
+import javax.validation.Valid;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 
 /**
  *
@@ -27,12 +35,16 @@ public class LoginController {
 
     private String tipoLogado;
 
+    @Valid
     private Usuario usuarioLogado;
+    private Validator validator;
 
     @PostConstruct
     public void init() {
         this.tipoLogado = "";
         this.usuarioLogado = null;
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        this.validator = factory.getValidator();
     }
 
     public String logar(String login, String senha) {
@@ -72,6 +84,44 @@ public class LoginController {
 
     public Usuario getUsuarioLogado() {
         return usuarioLogado;
+    }
+
+    public void alterar() {
+
+        List<String> mensagens = new ArrayList<>();
+        if (!validator.validate(this.usuarioLogado).isEmpty()) {
+            for (ConstraintViolation<Usuario> violation : validator.validate(this.usuarioLogado)) {
+                mensagens.add(violation.getMessage());
+            }
+
+        }
+        if (!mensagens.isEmpty()) {
+            FacesContext.getCurrentInstance()
+                    .addMessage(null,
+                            new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                                    "Erro!", String.join("<br>", mensagens)));
+            return;
+        }
+
+        ManagerDao.getCurrentInstance().update(this.usuarioLogado);
+
+        FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage("Seu perfil foi editado com sucesso!"));
+
+    }
+
+    public String deletar() {
+        ManagerDao.getCurrentInstance().delete(this.usuarioLogado);
+
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        Flash flash = facesContext.getExternalContext().getFlash();
+        flash.setKeepMessages(true);
+        facesContext.addMessage(null, new FacesMessage("Sua conta foi apagada com sucesso!"));
+
+        ExternalContext externalContext = facesContext.getExternalContext();
+        externalContext.invalidateSession(); 
+
+        return "index.xhtml?faces-redirect=true";
     }
 
     public static String sha512(String input) {

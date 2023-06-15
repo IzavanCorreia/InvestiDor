@@ -2,13 +2,104 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:b="http://bootsfaces.net/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
     <h:head>
-        <title>Facelet Title</title>
+        <title>Perfil</title>
+        <style>
+            .profile-container {
+                margin: 20px;
+            }
+
+            .profile-grid {
+                display: grid;
+                grid-template-columns: 100px auto;
+                grid-gap: 10px;
+            }
+
+            .profile-grid label {
+                font-weight: bold;
+            }
+
+            .edit-profile-btn {
+                margin-top: 20px;
+            }
+        </style>
     </h:head>
+
     <h:body>
+
         <ui:include src="MenuUsuario.xhtml"/>
-        Hello from Facelets
+
+        <div class="profile-container">
+            <h2>Perfil: #{loginController.usuarioLogado.nome} #{loginController.usuarioLogado.sobrenome}</h2>
+
+            <h:form>
+                <div class="profile-grid">
+                    <h:outputLabel for="cpf" value="CPF:"/>
+                    <h:outputText id="cpf" value="#{loginController.usuarioLogado.cpf}"/>
+
+                    <h:outputLabel for="nome" value="Nome:"/>
+                    <h:outputText id="nome" value="#{loginController.usuarioLogado.nome}"/>
+
+                    <h:outputLabel for="sobrenome" value="Sobrenome:"/>
+                    <h:outputText id="sobrenome" value="#{loginController.usuarioLogado.sobrenome}"/>
+
+                    <h:outputLabel for="telefone" value="Telefone:"/>
+                    <h:outputText id="telefone" value="#{loginController.usuarioLogado.telefone}"/>
+
+                    <h:outputLabel for="email" value="E-mail:"/>
+                    <h:outputText id="email" value="#{loginController.usuarioLogado.email}"/>
+
+                    <h:outputLabel for="senha" value="Senha:"/>
+                    <h:outputText id="senha" value="#{loginController.usuarioLogado.senha}"/>
+                </div>
+
+                <p:commandButton value="Editar perfil" styleClass="edit-profile-btn"
+                                 update=":formAlt" oncomplete="PF('editarPerfilDialog').show()"/>
+
+                <p:commandButton value="Apagar conta" styleClass="edit-profile-btn"
+                                 update=":formDel" oncomplete="PF('deletarPerfilDialog').show()"/>
+            </h:form>
+        </div>
+
+        <p:dialog id="editarPerfilDialog" widgetVar="editarPerfilDialog" header="#{loginController.usuarioLogado.nome}, altere os dados do seu perfil:"
+                  modal="true" resizable="false">
+            <h:form id="formAlt">
+                <div class="profile-grid">
+                    <h:outputLabel for="editCpf" value="CPF:"/>
+                    <b:inputText id="editCpf" value="#{loginController.usuarioLogado.cpf}"/>
+                    <h:outputLabel for="editNome" value="Nome:"/>
+                    <b:inputText id="editNome" value="#{loginController.usuarioLogado.nome}"/>
+
+                    <h:outputLabel for="editSobrenome" value="Sobrenome:"/>
+                    <b:inputText id="editSobrenome" value="#{loginController.usuarioLogado.sobrenome}"/>
+
+                    <h:outputLabel for="editTelefone" value="Telefone:"/>
+                    <b:inputText id="editTelefone" value="#{loginController.usuarioLogado.telefone}"/>
+
+                    <h:outputLabel for="editEmail" value="E-mail:"/>
+                    <b:inputText id="editEmail" value="#{loginController.usuarioLogado.email}"/>
+
+                    <h:outputLabel for="editSenha" value="Senha:"/>
+                    <b:inputText id="editSenha" value="#{loginController.usuarioLogado.senha}"/>
+                </div>
+                <b:commandButton value="Salvar" action="#{loginController.alterar()}"
+                                 oncomplete="PF('editarPerfilDialog').hide()"/>
+            </h:form>
+        </p:dialog>
+
+        <p:dialog id="deletarPerfilDialog" widgetVar="deletarPerfilDialog" header="#{loginController.usuarioLogado.nome}, tem certeza que deseja apagar a sua conta?"
+                  modal="true" resizable="false">
+            <h:form id="formDel">
+                <b:commandButton value="Sim" action="#{loginController.deletar()}"
+                                 oncomplete="PF('deletarPerfilDialog').hide()"/>
+       
+            </h:form>
+        </p:dialog>
+
     </h:body>
 </html>
-
