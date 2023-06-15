@@ -10,6 +10,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -17,6 +18,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.Flash;
+import static javax.servlet.RequestDispatcher.ERROR_MESSAGE;
 import javax.validation.ConstraintViolation;
 import src.java.model.dao.ManagerDao;
 import src.java.model.negocio.Usuario;
@@ -24,6 +26,8 @@ import javax.validation.Valid;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import static src.java.controllers.UsuarioController.sha512;
+import static src.java.controllers.UsuarioController.validatePassword;
 
 /**
  *
@@ -38,6 +42,10 @@ public class LoginController {
     @Valid
     private Usuario usuarioLogado;
     private Validator validator;
+    
+    private static final String PASSWORD_REGEX = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$&@#])[0-9a-zA-Z$&@#]{8,}$";
+    private static final String ERROR_MESSAGE = "A senha deve conter pelo menos um dígito, uma letra minúscula, uma letra maiúscula, "
+            + "um dos caracteres especiais ($, *, &, @, #) e ter no mínimo 8 caracteres.";
 
     @PostConstruct
     public void init() {
@@ -86,7 +94,73 @@ public class LoginController {
         return usuarioLogado;
     }
 
-    public void alterar() {
+    public void alterarSenha(String senhaAtual, String senhaNova, String confirma) {
+        
+        System.out.println(senhaAtual);
+        String confirmaSenhaAtual = sha512(senhaAtual);
+        String senhaQueVaiProBanco = sha512(senhaNova);
+        String confirmaSenhaNova = sha512(confirma);
+        
+        System.out.println(confirmaSenhaAtual);
+        System.out.println(this.usuarioLogado.getSenha());
+        
+        if (!confirmaSenhaAtual.equals(this.usuarioLogado.getSenha())) {
+
+            FacesContext.getCurrentInstance()
+                    .addMessage(null,
+                            new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                                    "Erro!", "A senha informada não é sua senha atual"));
+
+            return;
+
+        }
+        
+         if (!confirmaSenhaNova.equals(senhaQueVaiProBanco)) {
+
+            FacesContext.getCurrentInstance()
+                    .addMessage(null,
+                            new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                                    "Erro!", "A senha não bate com a confirmação"));
+
+            return;
+
+        }
+         
+          if (!validatePassword(confirma)) {
+            FacesContext.getCurrentInstance()
+                    .addMessage(null,
+                            new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                                    "Erro!", ERROR_MESSAGE));
+
+            return;
+        }
+         
+
+        List<String> mensagens = new ArrayList<>();
+        if (!validator.validate(this.usuarioLogado).isEmpty()) {
+            for (ConstraintViolation<Usuario> violation : validator.validate(this.usuarioLogado)) {
+                mensagens.add(violation.getMessage());
+            }
+
+        }
+        if (!mensagens.isEmpty()) {
+            FacesContext.getCurrentInstance()
+                    .addMessage(null,
+                            new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                                    "Erro!", String.join("<br>", mensagens)));
+            return;
+        }
+        
+        this.usuarioLogado.setSenha(senhaQueVaiProBanco);
+
+        ManagerDao.getCurrentInstance().update(this.usuarioLogado);
+
+        FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage("Sua senha foi alterada com sucesso!"));
+
+    }
+    
+     public void alterarPerfil() {    
 
         List<String> mensagens = new ArrayList<>();
         if (!validator.validate(this.usuarioLogado).isEmpty()) {
@@ -123,6 +197,11 @@ public class LoginController {
 
         return "index.xhtml?faces-redirect=true";
     }
+    
+     public static boolean validatePassword(String password) {
+        return Pattern.matches(PASSWORD_REGEX, password);
+    }
+    
 
     public static String sha512(String input) {
         try {

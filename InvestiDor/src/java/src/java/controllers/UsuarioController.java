@@ -77,7 +77,6 @@ public class UsuarioController {
             return;
         }
         
-        System.out.println(validatePassword(confirma));
         
           if (!validatePassword(confirma)) {
             FacesContext.getCurrentInstance()
