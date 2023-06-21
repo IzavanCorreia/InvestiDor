@@ -65,6 +65,8 @@ if ids_elementos != ids_elementos_depois:
                 driver.implicitly_wait(10)
                 import time
                 time.sleep(10)
+                import time
+                time.sleep(5)
 
                 investir_button = driver.find_element(By.ID, "formDeletar:certeza" + str(id_deletar))
                 investir_button.click()
