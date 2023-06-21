@@ -76,7 +76,12 @@ def lougout(driver):
     except:
         return 0
 
+def irPerfil(driver):
+    driver.get("http://localhost:8080/InvestiDor/faces/indexPerfil.xhtml")
 
+    driver.implicitly_wait(10)
+    assert driver.current_url == "http://localhost:8080/InvestiDor/faces/indexPerfil.xhtml"
+    return 1
 def irRendaFixa(driver):
     driver.get("http://localhost:8080/InvestiDor/faces/indexRendaFixa.xhtml")
 
@@ -287,3 +292,74 @@ def editarRendaVariavel(driver,investimento,id_editar):
     driver.implicitly_wait(10)
     #assert driver.current_url == "http://localhost:8080/InvestiDor/faces/indexRendaFixa.xhtml"
     #logging.info("Renda criado bem-sucedido")
+
+
+
+def pegarIdsCardsMetas(driver):
+    driver.get("http://localhost:8080/InvestiDor/faces/indexPerfil.xhtml")
+
+    elements = driver.find_elements(by="css selector", value=".ids")
+    ids = []
+    
+    # Iterar sobre os elementos encontrados
+    for element in elements:
+        # Fazer algo com cada elemento, por exemplo, imprimir seu texto
+        ids.append(element.text)
+    print(ids)
+    return ids
+
+
+
+def criarMeta(driver,nome,valor):
+
+    driver.get("http://localhost:8080/InvestiDor/faces/indexPerfil.xhtml")
+
+
+    logout_button = driver.find_element(By.ID, "perfil:botaometas")
+    logout_button.click()
+    driver.implicitly_wait(10)
+    import time
+    time.sleep(4)
+    nome_cdb = driver.find_element(By.ID, "input_formMetas:nome_meta")
+    nome_cdb.send_keys(nome)
+    indexador_input = driver.find_element(By.ID, "input_formMetas:valor_meta")
+    indexador_input.clear()
+    indexador_input.send_keys(valor)
+
+    
+
+    driver.implicitly_wait(10)
+
+
+    investir_button = driver.find_element(By.ID, "formMetas:criar_metas")
+    investir_button.click()
+
+    driver.implicitly_wait(10)
+    #assert driver.current_url == "http://localhost:8080/InvestiDor/faces/indexRendaFixa.xhtml"
+    #logging.info("Renda criado bem-sucedido")
+
+
+def editarMeta(driver,nome,valor,id_editar):
+    driver.get("http://localhost:8080/InvestiDor/faces/indexPerfil.xhtml")
+
+
+    investir_button = driver.find_element(By.ID, "formCards:editar" + str(id_editar))
+    investir_button.click()
+    import time
+    time.sleep(5)
+
+
+    nome_cdb = driver.find_element(By.ID, "input_formAlterar:nome_meta_editar")
+    nome_cdb.clear()
+
+    nome_cdb.send_keys(nome)
+    indexador_input = driver.find_element(By.ID, "input_formAlterar:meta_valor_editar")
+    indexador_input.clear()
+    indexador_input.send_keys(valor)
+
+
+    investir_button = driver.find_element(By.ID, "formAlterar:alterarbotaometa")
+    investir_button.click()
+    driver.implicitly_wait(10)
+    assert driver.current_url == "http://localhost:8080/InvestiDor/faces/indexPerfil.xhtml"
+    logging.info("Editar bem-sucedido")

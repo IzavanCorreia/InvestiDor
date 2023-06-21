@@ -21,10 +21,10 @@
         <h2 class="tituloPefil">Perfil: #{loginController.usuarioLogado.nome} #{loginController.usuarioLogado.sobrenome}</h2>
         <div class="profile-container">
 
-            <h:form>
+            <h:form id="perfil">
                 <div class="profile-grid">
 
-                    <p:commandButton value="Criar metas" styleClass="edit-profile-btn"
+                    <p:commandButton value="Criar metas" id="botaometas" styleClass="edit-profile-btn"
                                      update=":formMetas" oncomplete="PF('criarMetasDialog').show()"/>
 
                     <p:commandButton value="Editar perfil" styleClass="edit-profile-btn"
@@ -129,12 +129,12 @@
             <b:form id="formAlterar">
                 <b:panelGrid columns="2">
                     <h:outputText value="Informe qual é a meta:"/>
-                    <b:inputText value="#{metaController.metasel.nome}"/>
+                    <b:inputText value="#{metaController.metasel.nome}" id="nome_meta_editar"/>
                     <h:outputText value="Informe o valor da meta:"/>
-                    <b:inputText value="#{metaController.metasel.meta}"/>
+                    <b:inputText value="#{metaController.metasel.meta}" id="meta_valor_editar"/>
                 </b:panelGrid>
 
-                <b:commandButton value="Alterar" action="#{metaController.alterar()}" 
+                <b:commandButton id="alterarbotaometa" value="Alterar" action="#{metaController.alterar()}" 
                                  oncomplete="$('.formAlterar').modal('hide')"/>
             </b:form>
 
@@ -144,7 +144,7 @@
         <b:modal id="modalDeletar" style-class="modalDeletar fade"
                  title="Tem certeza que deseja apagar a meta #{metaController.metasel.nome}?">
             <b:form id="formDeletar">
-                <b:commandButton value="Sim" action="#{metaController.deletar()}" 
+                <b:commandButton value="Sim" id="certeza#{metaController.metasel.id}" action="#{metaController.deletar()}" 
                                  oncomplete="$('.formDeletar').modal('hide')"/>
             </b:form>
         </b:modal>
@@ -154,11 +154,11 @@
             <h:form id="formMetas">
                 <div class="profile-new">
                     <h:outputText value="Informe qual é a meta:"/>
-                    <b:inputText value="#{metaController.meta.nome}"/>
+                    <b:inputText id="nome_meta" value="#{metaController.meta.nome}"/>
                     <h:outputText value="Informe o valor da meta:"/>
-                    <b:inputText value="#{metaController.meta.meta}"/>
+                    <b:inputText id="valor_meta" value="#{metaController.meta.meta}"/>
                 </div>
-                <b:commandButton value="Criar" action="#{metaController.cadastrar()}"
+                <b:commandButton value="Criar" id="criar_metas" action="#{metaController.cadastrar()}"
                                  oncomplete="PF('criarMetasDialog').hide()"/>
             </h:form>
         </p:dialog>
