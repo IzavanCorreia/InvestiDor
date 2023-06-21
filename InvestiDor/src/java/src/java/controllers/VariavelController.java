@@ -12,6 +12,7 @@ import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
@@ -37,6 +38,7 @@ public class VariavelController {
     private Ticket ticket;
     private Set<Ticket> tickets;  // Lista de tickets disponíveis
     private Ticket ticketSelecionado;  // Ticket selecionado
+    private UsuarioController usuarioController;
 
     @PostConstruct
     public void init() {
@@ -47,6 +49,8 @@ public class VariavelController {
         // Recupere os tickets do banco de dados e adicione à lista
         List<Ticket> ticketsFromDatabase = ManagerDao.getCurrentInstance().read("SELECT t FROM Ticket t", Ticket.class);
         tickets.addAll(ticketsFromDatabase);
+
+        usuarioController = new UsuarioController();
     }
 
     public void cadastrar() {
@@ -76,6 +80,8 @@ public class VariavelController {
 
         ManagerDao.getCurrentInstance().insert(rendavariavel);
 
+        usuarioController.getValorTotalRendasPorUsuario(usuario.getId());
+
         this.rendavariavel = new RendaVariavel();
 
         FacesMessage successMessage = new FacesMessage("Investimento inserido com sucesso");
@@ -85,6 +91,11 @@ public class VariavelController {
     }
 
     public void deletar() {
+
+        Usuario usuario = ((LoginController) ((HttpSession) (FacesContext.
+                getCurrentInstance().getExternalContext().getSession(true))).
+                getAttribute("loginController")).getUsuarioLogado();
+
         if (rendavariavelsel == null) {
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "Nenhum investimento selecionado para deletar!", null));
@@ -92,9 +103,12 @@ public class VariavelController {
         }
 
         ManagerDao.getCurrentInstance().delete(this.rendavariavelsel);
+        
+        usuarioController.getValorTotalRendasPorUsuario(usuario.getId());
 
         FacesContext.getCurrentInstance().addMessage(null,
                 new FacesMessage("Renda variavel deletada com sucesso!"));
+
     }
 
     public void clearSelection() {
@@ -122,11 +136,17 @@ public class VariavelController {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
 
+        Usuario usuario = ((LoginController) ((HttpSession) (FacesContext.
+                getCurrentInstance().getExternalContext().getSession(true))).
+                getAttribute("loginController")).getUsuarioLogado();
+
         rendavariavelsel.setDataCompraFormatada();
         rendavariavelsel.setValorCompraTotal();
         rendavariavelsel.setValorAtualTotal();
 
         ticketSelecionado = rendavariavelsel.getTicket();
+
+        rendavariavel.setUsuario(usuario);
 
         Set<ConstraintViolation<RendaVariavel>> violations = validator.validate(rendavariavelsel);
 
@@ -141,6 +161,8 @@ public class VariavelController {
         }
 
         ManagerDao.getCurrentInstance().update(rendavariavelsel);
+
+        usuarioController.getValorTotalRendasPorUsuario(usuario.getId());
 
         FacesMessage successMessage = new FacesMessage("Renda variavel atualizada com sucesso!");
         if (!FacesContext.getCurrentInstance().getMessageList().contains(successMessage)) {

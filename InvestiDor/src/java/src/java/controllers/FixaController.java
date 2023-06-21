@@ -5,6 +5,7 @@ import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
@@ -27,10 +28,14 @@ public class FixaController {
     private RendaFixa rendafixa;
     private RendaFixa rendafixasel;
 
+    private UsuarioController usuarioController;
+
     @PostConstruct
     public void init() {
         this.rendafixa = new RendaFixa();
         this.rendafixasel = null;
+
+        usuarioController = new UsuarioController();
     }
 
     public void cadastrar() {
@@ -41,11 +46,11 @@ public class FixaController {
                 getCurrentInstance().getExternalContext().getSession(true))).
                 getAttribute("loginController")).getUsuarioLogado();
 
-        rendafixa.setUsuario(usuario);
         rendafixa.setDataInicialString();
         rendafixa.setDataFinalString();
         rendafixa.setValorTotalCompra();
         rendafixa.setValorTotalAtual();
+        rendafixa.setUsuario(usuario);
 
         Set<ConstraintViolation<RendaFixa>> violations = validator.validate(rendafixa);
 
@@ -61,6 +66,8 @@ public class FixaController {
 
         ManagerDao.getCurrentInstance().insert(rendafixa);
 
+        usuarioController.getValorTotalRendasPorUsuario(usuario.getId());
+
         this.rendafixa = new RendaFixa();
 
         FacesMessage successMessage = new FacesMessage("Investimento inserido com sucesso");
@@ -70,6 +77,11 @@ public class FixaController {
     }
 
     public void deletar() {
+
+        Usuario usuario = ((LoginController) ((HttpSession) (FacesContext.
+                getCurrentInstance().getExternalContext().getSession(true))).
+                getAttribute("loginController")).getUsuarioLogado();
+
         if (rendafixasel == null) {
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "Nenhum investimento selecionado para deletar!", null));
@@ -77,6 +89,8 @@ public class FixaController {
         }
 
         ManagerDao.getCurrentInstance().delete(this.rendafixasel);
+
+        usuarioController.getValorTotalRendasPorUsuario(usuario.getId());
 
         FacesContext.getCurrentInstance().addMessage(null,
                 new FacesMessage("Renda fixa deletada com sucesso!"));
@@ -107,10 +121,15 @@ public class FixaController {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
 
+        Usuario usuario = ((LoginController) ((HttpSession) (FacesContext.
+                getCurrentInstance().getExternalContext().getSession(true))).
+                getAttribute("loginController")).getUsuarioLogado();
+
         rendafixasel.setDataInicialString();
         rendafixasel.setDataFinalString();
         rendafixasel.setValorTotalCompra();
         rendafixasel.setValorTotalAtual();
+        rendafixa.setUsuario(usuario);
 
         Set<ConstraintViolation<RendaFixa>> violations = validator.validate(rendafixasel);
 
@@ -125,6 +144,8 @@ public class FixaController {
         }
 
         ManagerDao.getCurrentInstance().update(rendafixasel);
+        
+        usuarioController.getValorTotalRendasPorUsuario(usuario.getId());
 
         FacesMessage successMessage = new FacesMessage("Renda fixa atualizada com sucesso!");
         if (!FacesContext.getCurrentInstance().getMessageList().contains(successMessage)) {
@@ -137,5 +158,4 @@ public class FixaController {
         return ManagerDao.getCurrentInstance()
                 .read("select r from RendaFixa r", RendaFixa.class);
     }
-
 }

@@ -13,7 +13,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -41,7 +40,7 @@ public class Usuario {
     @Size(min = 2, max = 30, message = "O nome deve ter entre 2 e 50 caracteres")
     private String nome;
 
-    @NotNull(message = "O nome não pode ser nulo")
+    @NotNull(message = "O sobrenome não pode ser nulo")
     @NotEmpty(message = "O nome não pode estar vazio")
     @Size(min = 2, max = 50, message = "O nome deve ter entre 2 e 50 caracteres")
     private String sobrenome;
@@ -65,6 +64,9 @@ public class Usuario {
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RendaVariavel> rendaVariavel = new ArrayList<>();
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Meta> metas = new ArrayList<>();
 
     public int getId() {
         return id;
@@ -136,6 +138,14 @@ public class Usuario {
 
     public void setRendaVariavel(List<RendaVariavel> rendaVariavel) {
         this.rendaVariavel = rendaVariavel;
+    }
+
+    public List<Meta> getMetas() {
+        return metas;
+    }
+
+    public void setMetas(List<Meta> metas) {
+        this.metas = metas;
     }
 
 }

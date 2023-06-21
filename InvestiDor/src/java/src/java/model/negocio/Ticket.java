@@ -35,17 +35,17 @@ public class Ticket {
     @Size(min = 1, max = 100)
     private String nome;
 
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O campo nome da empresa não pode ser nulo")
     @Size(min = 1, max = 200)
     private String nomeEmpresa;
 
     @PontoDecimal
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O campo valor atual não pode ser nulo")
     @DecimalMin("0.01")
     @DecimalMax("99999.99")
     private double valorAtual;
 
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O campo tipo do ticket não pode ser nulo")
     private String tipoTicket;
 
     @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -6,7 +6,6 @@
 package src.java.controllers.servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

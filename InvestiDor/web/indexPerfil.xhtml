@@ -5,29 +5,12 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
       xmlns:b="http://bootsfaces.net/ui"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <h:head>
+        <link rel="stylesheet" href="stylesheet/perfil.css"> </link>
         <title>Perfil</title>
-        <style>
-            .profile-container {
-                margin: 20px;
-            }
-
-            .profile-grid {
-                display: grid;
-                grid-template-columns: 100px auto;
-                grid-gap: 10px;
-            }
-
-            .profile-grid label {
-                font-weight: bold;
-            }
-
-            .edit-profile-btn {
-                margin-top: 20px;
-            }
-        </style>
     </h:head>
 
     <h:body>
@@ -69,12 +52,105 @@
             </h:form>
         </div>
 
+        <b:form id="formCards">
+            <div class="button-container">
+                <div class="cards-container">
+                    <c:forEach items="#{metaController.lerTodasMetasPorUsuario(loginController.usuarioLogado.id)}"
+                               var="item" varStatus="i">
+
+                        <c:if test="#{i.index le 100}">
+                            <p:card styleClass="card">
+                                <f:facet name="header">
+                                    <h3 class="card-header">#{item.nome}</h3>
+
+                                    ID: <h:outputText class="ids" value="#{item.id}"/>
+
+                                </f:facet>
+
+                                <c:if test="#{item.completo == true}">
+                                    <h3>Meta atingida!</h3>
+                                </c:if>
+                                <c:if test="#{item.completo == false}">
+                                    <h3>Em andamento: #{(usuarioController.getValorTotalRendasPorUsuario(item.usuario.id) / item.meta) * 100}%</h3>
+                                </c:if>
+
+
+                                <div class="card-buttons">
+                                    <p:commandButton icon="glyphicon glyphicon-search" 
+                                                     oncomplete="$('.modalVisualizarMeta').modal('show')"
+                                                     ajax="true" update=":modalVisualizarMeta">
+                                        <f:setPropertyActionListener value="#{item}" target="#{metaController.metasel}" />
+                                    </p:commandButton>
+                                    <p:commandButton icon="glyphicon glyphicon-pencil"
+                                                     oncomplete="$('.modalAtualizar').modal('show')" update=":modalAtualizar"
+                                                     ajax="true" id="editar#{item.id}">
+                                        <f:setPropertyActionListener value="#{item}" target="#{metaController.metasel}" />
+                                    </p:commandButton>
+                                    <p:commandButton icon="glyphicon glyphicon-remove"
+                                                     oncomplete="$('.modalDeletar').modal('show')" update=":modalDeletar"
+                                                     ajax="true" id="deletar#{item.id}" >
+                                        <f:setPropertyActionListener value="#{item}" target="#{metaController.metasel}"  />
+                                    </p:commandButton>
+                                </div>
+                            </p:card>
+                        </c:if>
+                    </c:forEach>
+                </div>
+            </div>
+        </b:form>
+
+
+        <b:modal id="modalVisualizarMeta" style-class="modalVisualizarMeta fade"
+                 title="Acompanhamento da meta: ">
+            <b:form id="formVisualizarMeta">
+                <b:panelGrid columns="2">
+                    <h:outputText value="Valor da meta:"/>
+                    <h:outputText value="#{metaController.metasel.meta}"/>
+                    <h:outputText value="Valor total investido:"/>
+                    <h:outputText value="#{usuarioController.getValorTotalRendasPorUsuario(metaController.metasel.usuario.id)}"/>
+                </b:panelGrid>
+
+                <b:commandButton value="Ok" oncomplete="$('.formVisualizarMeta').modal('hide')"/>
+            </b:form>
+        </b:modal>
+
+
+        <b:modal id="modalAtualizar" style-class="modalAtualizar fade"
+                 title="Editar a meta: #{metaController.metasel.nome}">
+
+            <b:form id="formAlterar">
+                <b:panelGrid columns="2">
+                    <h:outputText value="Informe qual é a meta:"/>
+                    <b:inputText value="#{metaController.metasel.nome}"/>
+                    <h:outputText value="Informe o valor da meta:"/>
+                    <b:inputText value="#{metaController.metasel.meta}"/>
+                </b:panelGrid>
+
+                <b:commandButton value="Alterar" action="#{metaController.alterar()}" 
+                                 oncomplete="$('.formAlterar').modal('hide')"/>
+            </b:form>
+
+
+        </b:modal>
+
+        <b:modal id="modalDeletar" style-class="modalDeletar fade"
+                 title="Tem certeza que deseja apagar a meta #{metaController.metasel.nome}?">
+            <b:form id="formDeletar">
+                <b:commandButton value="Sim" action="#{metaController.deletar()}" 
+                                 oncomplete="$('.formDeletar').modal('hide')"/>
+            </b:form>
+        </b:modal>
+
         <p:dialog id="criarMetasDialog" widgetVar="criarMetasDialog" header="Crie a sua meta:"
                   modal="true" resizable="false">
             <h:form id="formMetas">
                 <div class="profile-grid">
+                    <h:outputText value="Informe qual é a meta:"/>
+                    <b:inputText value="#{metaController.meta.nome}"/>
+                    <h:outputText value="Informe o valor da meta:"/>
+                    <b:inputText value="#{metaController.meta.meta}"/>
                 </div>
-                <b:commandButton value="Criar" action="#{metaController.inserir()}"
+                <b:commandButton value="Criar" action="#{metaController.cadastrar()}"
                                  oncomplete="PF('criarMetasDialog').hide()"/>
             </h:form>
         </p:dialog>
@@ -110,7 +186,7 @@
                     <h:outputLabel for="ediSenha" value="Senha atual:"/>
                     <b:inputSecret id="senha" value="#{senhaAtual}"/>
 
-                    <h:outputLabel for="editSenhaNova" value="Senha nova:"/>
+                    <h:outputLabel for="editSenhaNova" value="Nova senha:"/>
                     <b:inputSecret id="senhaNova" value="#{senhaNova}"/>
 
                     <h:outputLabel for="editConfirma" value="Confirmação da senha:"/>

@@ -27,8 +27,6 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import static src.java.controllers.UsuarioController.sha512;
-import static src.java.controllers.UsuarioController.validatePassword;
-
 /**
  *
  * @author Izavan

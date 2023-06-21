@@ -35,17 +35,17 @@ public class RendaVariavel {
     private int id;
 
     @PontoDecimal
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O campo valor de compra não pode ser nulo")
     @DecimalMin("0.01")
     @DecimalMax("9999999999.99")
     private double valorCompra;
 
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O campo data não pode ser nulo")
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date dataCompra;
     private String dataCompraFormatada;
 
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O campo quantidade não pode ser nulo")
     @Min(value = 1, message = "A quantidade deve ser maior ou igual a um")
     @Max(value = 9999999999L, message = "A quantidade deve ser menor ou igual a 9999999999")
     private int quantidade;

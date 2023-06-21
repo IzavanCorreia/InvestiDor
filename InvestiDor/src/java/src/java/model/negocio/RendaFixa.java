@@ -39,18 +39,18 @@ public class RendaFixa {
     @Size(min = 1, max = 100)
     private String nome;
 
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O campo indexador não pode ser nulo")
     @Size(min = 1, max = 100)
     private String indexador;
 
     @PontoDecimal
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O campo quantidade não pode ser nulo")
     @DecimalMin("0.01")
     @DecimalMax("99999.99")
     private double quantidade;
 
     @PontoDecimal
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O campo valor unitário de compra não pode ser nulo")
     @DecimalMin("0.01")
     @DecimalMax("9999999999.99")
     private double valorUnitarioCompra;
@@ -58,22 +58,22 @@ public class RendaFixa {
     private double valorTotalCompra;
 
     @PontoDecimal
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O campo valor unitário atual não pode ser nulo")
     @DecimalMin("0.01")
     @DecimalMax("9999999999.99")
     private double valorUnitarioAtual;
 
     private double valorTotalAtual;
 
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O campo data inicial não pode ser nulo")
     @Temporal(TemporalType.DATE)
     private Date dataInicial;
 
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O campo data final não pode ser nulo")
     @Temporal(TemporalType.DATE)
     private Date dataFinal;
 
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O campo tipo não pode ser nulo")
     @Size(min = 1, max = 100)
     private String tipo;
 

@@ -16,12 +16,14 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import src.java.model.dao.ManagerDao;
+import src.java.model.negocio.Meta;
 import src.java.model.negocio.RendaFixa;
 import src.java.model.negocio.RendaVariavel;
 import src.java.model.negocio.Usuario;
@@ -52,7 +54,7 @@ public class UsuarioController {
     }
 
     public void inserir(String confirma) {
-        
+
         String confirmaNova = sha512(confirma);
         String senhaQueVaiProBanco = sha512(this.usuario.getSenha());
         this.usuario.setSenha(senhaQueVaiProBanco);
@@ -76,9 +78,8 @@ public class UsuarioController {
 
             return;
         }
-        
-        
-          if (!validatePassword(confirma)) {
+
+        if (!validatePassword(confirma)) {
             FacesContext.getCurrentInstance()
                     .addMessage(null,
                             new FacesMessage(FacesMessage.SEVERITY_ERROR,
@@ -174,6 +175,10 @@ public class UsuarioController {
         return ManagerDao.getCurrentInstance().read("select r from RendaVariavel r where r.usuario.id = " + id + " order by r.id desc", RendaVariavel.class);
     }
 
+    public List<Meta> lerTodasMetasPorUsuario(int id) {
+        return ManagerDao.getCurrentInstance().read("select m from Meta m where m.usuario.id = " + id + " order by m.id desc", Meta.class);
+    }
+
     public Double getValorTotalRendasFixasPorUsuario(int id) {
         Double valorTotalFixa = 0.0;
 
@@ -222,6 +227,41 @@ public class UsuarioController {
         return valorTotalVariavelCompra;
     }
 
+    public Double getValorTotalRendasPorUsuario(int id) {
+        List<RendaFixa> rendasFixas = lerTodasRendasFixasPorUsuario(id);
+        List<RendaVariavel> rendasVariaveis = lerTodasRendasVariaveisPorUsuario(id);
+        List<Meta> metas = lerTodasMetasPorUsuario(id);
+
+        Double valorTotal = calcularValorTotal(rendasFixas, rendasVariaveis);
+        atualizarStatusMetas(valorTotal, metas);
+
+        return valorTotal;
+    }
+
+    private Double calcularValorTotal(List<RendaFixa> rendasFixas, List<RendaVariavel> rendasVariaveis) {
+        Double valorTotal = 0.0;
+
+        for (RendaFixa rf : rendasFixas) {
+            valorTotal += rf.getValorTotalAtual();
+        }
+
+        for (RendaVariavel rv : rendasVariaveis) {
+            valorTotal += rv.getValorAtualTotal();
+        }
+
+        return valorTotal;
+    }
+
+    private void atualizarStatusMetas(Double valorTotal, List<Meta> metas) {
+        for (Meta meta : metas) {
+            boolean completo = valorTotal >= meta.getMeta();
+            meta.setCompleto(completo);
+
+            ManagerDao.getCurrentInstance().update(meta); // Atualiza a meta no banco de dados
+
+        }
+    }
+
     public static String sha512(String input) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-512");
@@ -240,7 +280,7 @@ public class UsuarioController {
             return null;
         }
     }
-    
+
     public static boolean validatePassword(String password) {
         return Pattern.matches(PASSWORD_REGEX, password);
     }
