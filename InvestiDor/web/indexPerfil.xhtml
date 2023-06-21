@@ -17,11 +17,27 @@
 
         <ui:include src="MenuUsuario.xhtml"/>
 
+
+        <h2 class="tituloPefil">Perfil: #{loginController.usuarioLogado.nome} #{loginController.usuarioLogado.sobrenome}</h2>
         <div class="profile-container">
-            <h2>Perfil: #{loginController.usuarioLogado.nome} #{loginController.usuarioLogado.sobrenome}</h2>
 
             <h:form>
                 <div class="profile-grid">
+
+                    <p:commandButton value="Criar metas" styleClass="edit-profile-btn"
+                                     update=":formMetas" oncomplete="PF('criarMetasDialog').show()"/>
+
+                    <p:commandButton value="Editar perfil" styleClass="edit-profile-btn"
+                                     update=":formAlt" oncomplete="PF('editarPerfilDialog').show()"/>
+
+                    <p:commandButton value="Trocar senha" styleClass="edit-profile-btn"
+                                     update=":formAltSenha" oncomplete="PF('editarPerfilSenhaDialog').show()"/>
+
+                    <p:commandButton value="Apagar conta" styleClass="edit-profile-btn"
+                                     update=":formDel" oncomplete="PF('deletarPerfilDialog').show()"/>
+
+                </div>
+                <div class="profile-command">
                     <h:outputLabel for="cpf" value="CPF:"/>
                     <h:outputText id="cpf" value="#{loginController.usuarioLogado.cpf}"/>
 
@@ -37,24 +53,15 @@
                     <h:outputLabel for="email" value="E-mail:"/>
                     <h:outputText id="email" value="#{loginController.usuarioLogado.email}"/>
                 </div>
-
-                <p:commandButton value="Criar metas" styleClass="edit-profile-btn"
-                                 update=":formMetas" oncomplete="PF('criarMetasDialog').show()"/>
-
-                <p:commandButton value="Editar perfil" styleClass="edit-profile-btn"
-                                 update=":formAlt" oncomplete="PF('editarPerfilDialog').show()"/>
-
-                <p:commandButton value="Trocar senha" styleClass="edit-profile-btn"
-                                 update=":formAltSenha" oncomplete="PF('editarPerfilSenhaDialog').show()"/>
-
-                <p:commandButton value="Apagar conta" styleClass="edit-profile-btn"
-                                 update=":formDel" oncomplete="PF('deletarPerfilDialog').show()"/>
             </h:form>
         </div>
 
+
         <b:form id="formCards">
             <div class="button-container">
+                <h2>Minhas metas</h2>
                 <div class="cards-container">
+
                     <c:forEach items="#{metaController.lerTodasMetasPorUsuario(loginController.usuarioLogado.id)}"
                                var="item" varStatus="i">
 
@@ -101,7 +108,8 @@
 
 
         <b:modal id="modalVisualizarMeta" style-class="modalVisualizarMeta fade"
-                 title="Acompanhamento da meta: ">
+                 title="Acompanhamento da meta #{metaController.metasel.nome}: ">
+
             <b:form id="formVisualizarMeta">
                 <b:panelGrid columns="2">
                     <h:outputText value="Valor da meta:"/>
@@ -144,7 +152,7 @@
         <p:dialog id="criarMetasDialog" widgetVar="criarMetasDialog" header="Crie a sua meta:"
                   modal="true" resizable="false">
             <h:form id="formMetas">
-                <div class="profile-grid">
+                <div class="profile-new">
                     <h:outputText value="Informe qual é a meta:"/>
                     <b:inputText value="#{metaController.meta.nome}"/>
                     <h:outputText value="Informe o valor da meta:"/>
@@ -158,7 +166,7 @@
         <p:dialog id="editarPerfilDialog" widgetVar="editarPerfilDialog" header="#{loginController.usuarioLogado.nome}, altere os dados do seu perfil:"
                   modal="true" resizable="false">
             <h:form id="formAlt">
-                <div class="profile-grid">
+                <div class="profile-new">
                     <h:outputLabel for="editCpf" value="CPF:"/>
                     <b:inputText id="editCpf" value="#{loginController.usuarioLogado.cpf}"/>
                     <h:outputLabel for="editNome" value="Nome:"/>
@@ -182,7 +190,7 @@
         <p:dialog id="editarPerfilSenhaDialog" widgetVar="editarPerfilSenhaDialog" header="#{loginController.usuarioLogado.nome}, altere a senha da sua conta:"
                   modal="true" resizable="false">
             <h:form id="formAltSenha">
-                <div class="profile-grid">
+                <div class="profile-new">
                     <h:outputLabel for="ediSenha" value="Senha atual:"/>
                     <b:inputSecret id="senha" value="#{senhaAtual}"/>
 
