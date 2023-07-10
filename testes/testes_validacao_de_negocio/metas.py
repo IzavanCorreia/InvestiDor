@@ -29,7 +29,7 @@ num_tests_passed,num_tests_failed = verificarTeste("Login", num_tests_passed,num
 
 
 logging.info("Indo para perfil...")
-num_tests_passed,num_tests_failed = verificarTeste("Indo para renda fixa", num_tests_passed,num_tests_failed , irPerfil(driver))
+num_tests_passed,num_tests_failed = verificarTeste("Indo para perfil", num_tests_passed,num_tests_failed , irPerfil(driver))
 
 
 logging.info("Criar Meta")
@@ -47,7 +47,7 @@ if ids_elementos != ids_elementos_depois:
                 
                 logging.info("Editar elemento criado")
 
-                num_tests_passed,num_tests_failed = verificarTeste("Editando Renda Fixa", num_tests_passed,num_tests_failed , editarMeta(driver,"Lucas","5000",id_deletar))
+                num_tests_passed,num_tests_failed = verificarTeste("Editando Renda Fixa", num_tests_passed,num_tests_failed , editarMeta(driver,"Lucas","8710",id_deletar))
                 
 
 

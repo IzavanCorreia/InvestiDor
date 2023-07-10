@@ -27,7 +27,7 @@
                     <p:commandButton value="Criar metas" id="botaometas" styleClass="edit-profile-btn"
                                      update=":formMetas" oncomplete="PF('criarMetasDialog').show()"/>
 
-                    <p:commandButton value="Editar perfil" styleClass="edit-profile-btn"
+                    <p:commandButton id="editarperfil" value="Editar perfil" styleClass="edit-profile-btn"
                                      update=":formAlt" oncomplete="PF('editarPerfilDialog').show()"/>
 
                     <p:commandButton value="Trocar senha" styleClass="edit-profile-btn"
@@ -182,7 +182,7 @@
                     <b:inputText id="editEmail" value="#{loginController.usuarioLogado.email}"/>
 
                 </div>
-                <b:commandButton value="Salvar" action="#{loginController.alterarPerfil()}"
+                <b:commandButton id="editarsalvar" value="Salvar" action="#{loginController.alterarPerfil()}"
                                  oncomplete="PF('editarPerfilDialog').hide()"/>
             </h:form>
         </p:dialog>
@@ -208,7 +208,7 @@
         <p:dialog id="deletarPerfilDialog" widgetVar="deletarPerfilDialog" header="#{loginController.usuarioLogado.nome}, tem certeza que deseja apagar a sua conta?"
                   modal="true" resizable="false">
             <h:form id="formDel">
-                <b:commandButton value="Sim" action="#{loginController.deletar()}"
+                <b:commandButton  value="Sim" action="#{loginController.deletar()}"
                                  oncomplete="PF('deletarPerfilDialog').hide()"/>
 
             </h:form>

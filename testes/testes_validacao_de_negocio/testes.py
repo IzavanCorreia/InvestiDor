@@ -363,3 +363,50 @@ def editarMeta(driver,nome,valor,id_editar):
     driver.implicitly_wait(10)
     assert driver.current_url == "http://localhost:8080/InvestiDor/faces/indexPerfil.xhtml"
     logging.info("Editar bem-sucedido")
+
+
+def editarPerfilNome(driver,nome):
+    driver.get("http://localhost:8080/InvestiDor/faces/indexPerfil.xhtml")
+
+
+    investir_button = driver.find_element(By.ID, "perfil:editarperfil")
+    investir_button.click()
+    import time
+    time.sleep(5)
+
+
+    nome_cdb = driver.find_element(By.ID, "input_formAlt:editNome")
+    nome_cdb.clear()
+
+    nome_cdb.send_keys(nome)
+   
+
+    investir_button = driver.find_element(By.ID, "formAlt:editarsalvar")
+    investir_button.click()
+    driver.implicitly_wait(10)
+    assert driver.current_url == "http://localhost:8080/InvestiDor/faces/indexPerfil.xhtml"
+    logging.info("Editar bem-sucedido")
+
+def editarPerfilSobreNome(driver,nome):
+    driver.get("http://localhost:8080/InvestiDor/faces/indexPerfil.xhtml")
+
+
+    investir_button = driver.find_element(By.ID, "perfil:editarperfil")
+    investir_button.click()
+    import time
+    time.sleep(5)
+
+
+    nome_cdb = driver.find_element(By.ID, "input_formAlt:editSobrenome")
+    nome_cdb.clear()
+
+    nome_cdb.send_keys(nome)
+   
+
+    investir_button = driver.find_element(By.ID, "formAlt:editarsalvar")
+    investir_button.click()
+    driver.implicitly_wait(10)
+    assert driver.current_url == "http://localhost:8080/InvestiDor/faces/indexPerfil.xhtml"
+    logging.info("Editar bem-sucedido")
+
+    
