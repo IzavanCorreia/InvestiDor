@@ -62,29 +62,29 @@
                 <b:formGroup>
                     <b:panelGrid columns="2">
                         <h:outputText value="Nome:"/>
-                        <b:inputText value="#{fixaController.rendafixa.nome}" id="nome_rendafixa"/>
+                        <b:inputText value="#{fixaController.rendafixa.nome}" id="nome_rendafixa" maxlength="50"/>
                         <h:outputText value="Indexador:"/>
-                        <b:inputText value="#{fixaController.rendafixa.indexador}" id="indexador"/>
+                        <b:inputText value="#{fixaController.rendafixa.indexador}" id="indexador" maxlength="50"/>
                         <h:outputText value="Quantidade:"/>
-                        <b:inputText value="#{fixaController.rendafixa.quantidade}" id="quantidade" />
+                        <b:inputText value="#{fixaController.rendafixa.quantidade}" id="quantidade" maxlength="50"/>
                         <h:outputText value="Valor unitário de compra:"/>
-                        <b:inputText value="#{fixaController.rendafixa.valorUnitarioCompra}" id="valor_unit"/>
+                        <b:inputText value="#{fixaController.rendafixa.valorUnitarioCompra}" id="valor_unit" maxlength="50"/>
                         <h:outputText value="Valor unitário atual:"/>
-                        <b:inputText value="#{fixaController.rendafixa.valorUnitarioAtual}" id="valor_atual"/>
-                        <h:outputText value="Data inicial:" />
+                        <b:inputText value="#{fixaController.rendafixa.valorUnitarioAtual}" id="valor_atual" maxlength="50"/>
+                        <h:outputText value="Data inicial:"/>
                         <p:calendar value="#{fixaController.rendafixa.dataInicial}" id="data_inicial"
                                     showOn="button" 
                                     navigator="true" 
                                     required="true" 
-                                    requiredMessage="Por favor, selecione a data de início." />
+                                    requiredMessage="Por favor, selecione a data de início." maxlength="50"/>
                         <h:outputText value="Data final:"/>
                         <p:calendar value="#{fixaController.rendafixa.dataFinal}"  id="data_final"
                                     showOn="button" 
                                     navigator="true" 
                                     required="true" 
-                                    requiredMessage="Por favor, selecione a data de fim." />
+                                    requiredMessage="Por favor, selecione a data de fim." maxlength="50"/>
                         <h:outputText value="Tipo:"  />
-                        <b:inputText value="#{fixaController.rendafixa.tipo}" id="tipo_investimento" />
+                        <b:inputText value="#{fixaController.rendafixa.tipo}" id="tipo_investimento" maxlength="50"/>
                         <h:outputText value="Imposto:"  />
                         <p:selectBooleanCheckbox value="#{fixaController.rendafixa.imposto}" itemLabel="sim" id="imposto" />
                     </b:panelGrid>
@@ -181,29 +181,29 @@
             <b:form id="formAlt">
                 <b:panelGrid columns="2">
                     <h:outputText value="Nome:"/>
-                    <b:inputText value="#{fixaController.rendafixasel.nome}" id="nomeEditar#{fixaController.rendafixasel.id}" />
+                    <b:inputText value="#{fixaController.rendafixasel.nome}" id="nomeEditar#{fixaController.rendafixasel.id}" maxlength="50"/>
                     <h:outputText value="Indexador:"/>
-                    <b:inputText value="#{fixaController.rendafixasel.indexador}" id="indexadorEditar#{fixaController.rendafixasel.id}"/>
+                    <b:inputText value="#{fixaController.rendafixasel.indexador}" id="indexadorEditar#{fixaController.rendafixasel.id}" maxlength="50"/>
                     <h:outputText value="Quantidade:"/>
-                    <b:inputText value="#{fixaController.rendafixasel.quantidade}" id="quantidadeEditar#{fixaController.rendafixasel.id}" />
+                    <b:inputText value="#{fixaController.rendafixasel.quantidade}" id="quantidadeEditar#{fixaController.rendafixasel.id}" maxlength="50"/>
                     <h:outputText value="Valor unitário de compra:"/>
-                    <b:inputText value="#{fixaController.rendafixasel.valorUnitarioCompra}" id="valor_unitEditar#{fixaController.rendafixasel.id}" />
+                    <b:inputText value="#{fixaController.rendafixasel.valorUnitarioCompra}" id="valor_unitEditar#{fixaController.rendafixasel.id}" maxlength="50"/>
                     <h:outputText value="Valor unitário atual:"/>
-                    <b:inputText value="#{fixaController.rendafixasel.valorUnitarioAtual}" id="valor_atualEditar#{fixaController.rendafixasel.id}" />
+                    <b:inputText value="#{fixaController.rendafixasel.valorUnitarioAtual}" id="valor_atualEditar#{fixaController.rendafixasel.id}" maxlength="50"/>
                     <h:outputText value="Data inicial:"/>
                     <p:calendar value="#{fixaController.rendafixasel.dataInicial}" 
                                 showOn="button" 
                                 navigator="true" 
                                 required="true" 
-                                requiredMessage="Por favor, selecione a data de início." id="data_inicialEditar#{fixaController.rendafixasel.id}" />
+                                requiredMessage="Por favor, selecione a data de início." id="data_inicialEditar#{fixaController.rendafixasel.id}" maxlength="50"/>
                     <h:outputText value="Data final:"/>
                     <p:calendar value="#{fixaController.rendafixasel.dataFinal}" 
                                 showOn="button" 
                                 navigator="true" 
                                 required="true" 
-                                requiredMessage="Por favor, selecione a data de fim."  id="data_finalEditar#{fixaController.rendafixasel.id}"/>
+                                requiredMessage="Por favor, selecione a data de fim."  id="data_finalEditar#{fixaController.rendafixasel.id}" maxlength="50"/>
                     <h:outputText value="Tipo:"/>
-                    <b:inputText value="#{fixaController.rendafixasel.tipo}" id="tipo_investimentoEditar#{fixaController.rendafixasel.id}" />
+                    <b:inputText value="#{fixaController.rendafixasel.tipo}" id="tipo_investimentoEditar#{fixaController.rendafixasel.id}" maxlength="50"/>
                     <h:outputText value="Imposto:"/>
                     <p:selectBooleanCheckbox value="#{fixaController.rendafixasel.imposto}" itemLabel="sim" id="impostoEditar#{fixaController.rendafixasel.id}" />
                 </b:panelGrid>

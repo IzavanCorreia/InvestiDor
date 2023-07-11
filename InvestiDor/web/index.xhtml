@@ -7,8 +7,8 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
+        <link rel="stylesheet" href="stylesheet/login.css"> </link>
         <title>Página Inicial</title>
-
     </h:head>
     <h:body>
 
@@ -32,10 +32,10 @@
             <b:form id="formLogin">
                 <b:panelGrid columns="1">
                     <h:outputText value="login:"/>
-                    <b:inputText value="#{login}" id="usuario"/>
+                    <b:inputText value="#{login}" id="usuario" maxlength="100"/>
 
                     <h:outputText value="senha:"/>
-                    <b:inputSecret value="#{senha}" id="senha_password"/>
+                    <b:inputSecret value="#{senha}" id="senha_password" maxlength="100"/>
                 </b:panelGrid>
                 <p:panel>
                     <h5>registre-se</h5>
@@ -56,26 +56,26 @@
             <b:form id="formCadPuxador">
                 <b:panelGrid columns="2">
 
-                    <h:outputText value="CPF"/>
-                    <b:inputText value="#{usuarioController.usuario.cpf}" id="cpf_registraraa"/>
+                    <h:outputText value="Cpf:"/>
+                    <b:inputText value="#{usuarioController.usuario.cpf}" id="cpf_registraraa" maxlength="100"/>
 
-                    <h:outputText value="Nome"/>
-                    <b:inputText value="#{usuarioController.usuario.nome}" id="nome_registraraa"/>
+                    <h:outputText value="Nome:"/>
+                    <b:inputText value="#{usuarioController.usuario.nome}" id="nome_registraraa" maxlength="100"/>
 
-                    <h:outputText value="Sobrenome"/>
-                    <b:inputText value="#{usuarioController.usuario.sobrenome}" id="sobrenome_registraraa"/>
+                    <h:outputText value="Sobrenome:"/>
+                    <b:inputText value="#{usuarioController.usuario.sobrenome}" id="sobrenome_registraraa" maxlength="100"/>
 
-                    <h:outputText value="Telefone"/>
-                    <b:inputText value="#{usuarioController.usuario.telefone}" id="telefone_registraraa"/>
+                    <h:outputText value="Telefone:"/>
+                    <b:inputText value="#{usuarioController.usuario.telefone}" id="telefone_registraraa" maxlength="100"/>
 
-                    <h:outputText value="e-mail"/>
-                    <b:inputText value="#{usuarioController.usuario.email}" id="email_registraraa" type="e-mail"/>
+                    <h:outputText value="E-mail:"/>
+                    <b:inputText value="#{usuarioController.usuario.email}" id="email_registraraa" type="e-mail" maxlength="100"/>
 
-                    <h:outputText value="Senha"/>
-                    <b:inputSecret value="#{usuarioController.usuario.senha}" id="senha_registraraa"/>
+                    <h:outputText value="Senha:"/>
+                    <b:inputSecret value="#{usuarioController.usuario.senha}" id="senha_registraraa" maxlength="100"/>
 
-                    <h:outputText value="Confirma"/>
-                    <b:inputSecret value="#{confirma}" id="senha_registrar"/>
+                    <h:outputText value="Confirma:"/>
+                    <b:inputSecret value="#{confirma}" id="senha_registrar" maxlength="100"/>
                 </b:panelGrid>
                 <b:commandButton value="registrar" action="#{usuarioController.inserir(confirma)}" id="criarconta_registraraa"/>
             </b:form>

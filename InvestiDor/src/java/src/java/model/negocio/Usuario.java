@@ -38,11 +38,13 @@ public class Usuario {
     @NotNull(message = "O nome não pode ser nulo")
     @NotEmpty(message = "O nome não pode estar vazio")
     @Size(min = 2, max = 30, message = "O nome deve ter entre 2 e 50 caracteres")
+    @Pattern(regexp = "^[A-Za-z]+$", message = "O campo indexador só pode conter letras")
     private String nome;
 
     @NotNull(message = "O sobrenome não pode ser nulo")
     @NotEmpty(message = "O nome não pode estar vazio")
     @Size(min = 2, max = 50, message = "O nome deve ter entre 2 e 50 caracteres")
+    @Pattern(regexp = "^[A-Za-z]+$", message = "O campo indexador só pode conter letras")
     private String sobrenome;
 
     @NotNull(message = "O telefone não pode ser nulo")

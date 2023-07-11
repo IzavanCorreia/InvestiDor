@@ -67,24 +67,24 @@
 
                                     <c:if  test="#{i.index le 50}">
 
-                                        <f:selectItem itemLabel="#{item.nome}" itemValue="#{item}"/>
+                                        <f:selectItem itemLabel="#{item.nome} #{item.valorAtual} BRL" itemValue="#{item}"/>
 
                                     </c:if>
 
                                 </c:forEach>
 
-                            </b:selectOneMenu>   
+                            </b:selectOneMenu> 
 
                             <h:outputText value="Valor de compra:"/>
-                            <b:inputText value="#{variavelController.rendavariavel.valorCompra}" id="valorCompra"/>
+                            <b:inputText value="#{variavelController.rendavariavel.valorCompra}" id="valorCompra" maxlength="50"/>
                             <h:outputText value="Quantidade:"/>
-                            <b:inputText value="#{variavelController.rendavariavel.quantidade}" id="quantidade_compra"/>  
+                            <b:inputText value="#{variavelController.rendavariavel.quantidade}" id="quantidade_compra" maxlength="50"/>  
                             <h:outputText value="Data da compra:"/>
                             <p:calendar value="#{variavelController.rendavariavel.dataCompra}" id="data_compra" 
                                         showOn="button" 
                                         navigator="true" 
                                         required="true" 
-                                        requiredMessage="Por favor, selecione a data da compra." />
+                                        requiredMessage="Por favor, selecione a data da compra." maxlength="50"/>
                         </b:panelGrid>
                     </div>
                     <b:commandButton value="Inserir o investimento" action="#{variavelController.cadastrar()}" id="inserir_criacao"/>
@@ -103,7 +103,7 @@
                             <p:card styleClass="card">
                                 <f:facet name="header">
                                     <h3 class="card-header">#{item.ticket.nome}</h3>
-                                                                       ID:<h3 class="ids">#{item.id}</h3>
+                                    ID:<h3 class="ids">#{item.id}</h3>
 
                                 </f:facet>
                                 <f:facet name="header">
@@ -170,15 +170,15 @@
                             </b:selectOneMenu>
 
                             <h:outputText value="Valor de compra:"/>
-                            <b:inputText value="#{variavelController.rendavariavelsel.valorCompra}" id="valor_compra#{variavelController.rendavariavelsel.id}"/>
+                            <b:inputText value="#{variavelController.rendavariavelsel.valorCompra}" id="valor_compra#{variavelController.rendavariavelsel.id}" maxlength="50"/>
                             <h:outputText value="Quantidade:"/>
-                            <b:inputText value="#{variavelController.rendavariavelsel.quantidade}"  id="valor_quantidade#{variavelController.rendavariavelsel.id}" />  
+                            <b:inputText value="#{variavelController.rendavariavelsel.quantidade}"  id="valor_quantidade#{variavelController.rendavariavelsel.id}" maxlength="50"/>  
                             <h:outputText value="Data da compra:"/>
                             <p:calendar value="#{variavelController.rendavariavelsel.dataCompra}"  id="data_compra#{variavelController.rendavariavelsel.id}" 
                                         showOn="button" 
                                         navigator="true" 
                                         required="true" 
-                                        requiredMessage="Por favor, selecione a data da compra." />
+                                        requiredMessage="Por favor, selecione a data da compra." maxlength="50"/>
 
                         </b:panelGrid>
                     </div>

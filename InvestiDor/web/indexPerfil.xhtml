@@ -78,9 +78,12 @@
                                     <h3>Meta atingida!</h3>
                                 </c:if>
                                 <c:if test="#{item.completo == false}">
-                                    <h3>Em andamento: #{(usuarioController.getValorTotalRendasPorUsuario(item.usuario.id) / item.meta) * 100}%</h3>
-                                </c:if>
 
+                                    <h3>Em andamento: <h:outputText value="#{(usuarioController.getValorTotalRendasPorUsuario(item.usuario.id) / item.meta) * 100}">
+                                            <f:convertNumber pattern="0.0" />
+                                        </h:outputText>%</h3>
+
+                                </c:if>
 
                                 <div class="card-buttons">
                                     <p:commandButton icon="glyphicon glyphicon-search" 
@@ -129,9 +132,9 @@
             <b:form id="formAlterar">
                 <b:panelGrid columns="2">
                     <h:outputText value="Informe qual é a meta:"/>
-                    <b:inputText value="#{metaController.metasel.nome}" id="nome_meta_editar"/>
+                    <b:inputText value="#{metaController.metasel.nome}" id="nome_meta_editar" maxlength="100"/>
                     <h:outputText value="Informe o valor da meta:"/>
-                    <b:inputText value="#{metaController.metasel.meta}" id="meta_valor_editar"/>
+                    <b:inputText value="#{metaController.metasel.meta}" id="meta_valor_editar" maxlength="100"/>
                 </b:panelGrid>
 
                 <b:commandButton id="alterarbotaometa" value="Alterar" action="#{metaController.alterar()}" 
@@ -154,9 +157,9 @@
             <h:form id="formMetas">
                 <div class="profile-new">
                     <h:outputText value="Informe qual é a meta:"/>
-                    <b:inputText id="nome_meta" value="#{metaController.meta.nome}"/>
+                    <b:inputText id="nome_meta" value="#{metaController.meta.nome}" maxlength="100"/>
                     <h:outputText value="Informe o valor da meta:"/>
-                    <b:inputText id="valor_meta" value="#{metaController.meta.meta}"/>
+                    <b:inputText id="valor_meta" value="#{metaController.meta.meta}" maxlength="100"/>
                 </div>
                 <b:commandButton value="Criar" id="criar_metas" action="#{metaController.cadastrar()}"
                                  oncomplete="PF('criarMetasDialog').hide()"/>
@@ -168,18 +171,18 @@
             <h:form id="formAlt">
                 <div class="profile-new">
                     <h:outputLabel for="editCpf" value="CPF:"/>
-                    <b:inputText id="editCpf" value="#{loginController.usuarioLogado.cpf}"/>
+                    <b:inputText id="editCpf" value="#{loginController.usuarioLogado.cpf}" maxlength="100"/>
                     <h:outputLabel for="editNome" value="Nome:"/>
-                    <b:inputText id="editNome" value="#{loginController.usuarioLogado.nome}"/>
+                    <b:inputText id="editNome" value="#{loginController.usuarioLogado.nome}" maxlength="100"/>
 
                     <h:outputLabel for="editSobrenome" value="Sobrenome:"/>
-                    <b:inputText id="editSobrenome" value="#{loginController.usuarioLogado.sobrenome}"/>
+                    <b:inputText id="editSobrenome" value="#{loginController.usuarioLogado.sobrenome}" maxlength="100"/>
 
                     <h:outputLabel for="editTelefone" value="Telefone:"/>
-                    <b:inputText id="editTelefone" value="#{loginController.usuarioLogado.telefone}"/>
+                    <b:inputText id="editTelefone" value="#{loginController.usuarioLogado.telefone}" maxlength="100"/>
 
                     <h:outputLabel for="editEmail" value="E-mail:"/>
-                    <b:inputText id="editEmail" value="#{loginController.usuarioLogado.email}"/>
+                    <b:inputText id="editEmail" value="#{loginController.usuarioLogado.email}" maxlength="100"/>
 
                 </div>
                 <b:commandButton id="editarsalvar" value="Salvar" action="#{loginController.alterarPerfil()}"
@@ -192,13 +195,13 @@
             <h:form id="formAltSenha">
                 <div class="profile-new">
                     <h:outputLabel for="ediSenha" value="Senha atual:"/>
-                    <b:inputSecret id="senha" value="#{senhaAtual}"/>
+                    <b:inputSecret id="senha" value="#{senhaAtual}" maxlength="100"/>
 
                     <h:outputLabel for="editSenhaNova" value="Nova senha:"/>
-                    <b:inputSecret id="senhaNova" value="#{senhaNova}"/>
+                    <b:inputSecret id="senhaNova" value="#{senhaNova}" maxlength="100"/>
 
                     <h:outputLabel for="editConfirma" value="Confirmação da senha:"/>
-                    <b:inputSecret id="confirma" value="#{confirma}"/>
+                    <b:inputSecret id="confirma" value="#{confirma}" maxlength="100"/>
                 </div>
                 <b:commandButton value="Confirmar" action="#{loginController.alterarSenha(senhaAtual, senhaNova, confirma)}"
                                  oncomplete="PF('editarPerfilSenhaDialog').hide()"/>
@@ -209,7 +212,7 @@
                   modal="true" resizable="false">
             <h:form id="formDel">
                 <b:commandButton  value="Sim" action="#{loginController.deletar()}"
-                                 oncomplete="PF('deletarPerfilDialog').hide()"/>
+                                  oncomplete="PF('deletarPerfilDialog').hide()"/>
 
             </h:form>
         </p:dialog>

@@ -22,6 +22,7 @@ import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Pattern;
 import src.java.model.validacao.PontoDecimal;
 
 /**
@@ -41,6 +42,7 @@ public class RendaFixa {
 
     @NotNull(message = "O campo indexador não pode ser nulo")
     @Size(min = 1, max = 100)
+    @Pattern(regexp = "^[A-Za-z]+$", message = "O campo indexador só pode conter letras")
     private String indexador;
 
     @PontoDecimal
@@ -75,6 +77,7 @@ public class RendaFixa {
 
     @NotNull(message = "O campo tipo não pode ser nulo")
     @Size(min = 1, max = 100)
+    @Pattern(regexp = "^[A-Za-z]+$", message = "O campo indexador só pode conter letras")
     private String tipo;
 
     private boolean imposto;
